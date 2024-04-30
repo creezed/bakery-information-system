@@ -1,0 +1,28 @@
+{
+  "name": "api-client",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/api-client/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/web/api-client/jest.config.ts"
+      }
+    },
+    "api:generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["ng-openapi-gen --config ./src/lib/generator.json"],
+        "cwd": "libs/web/api-client",
+        "parallel": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+<header tuiNavigationHeader>
+  <button appearance="secondary" iconLeft="tuiIconGrid" tuiIconButton>
+    Menu
+  </button>
+  <span tuiNavigationLogo>
+    <tui-icon icon="tuiIconHome"></tui-icon>
+    <span tuiFade>Информационная система пекарни</span>
+  </span>
+  <hr />
+  <button iconLeft="tuiIconBell" tuiIconButton>
+    Notifications
+    <tui-badge-notification></tui-badge-notification>
+  </button>
+  <tui-avatar src="AI"></tui-avatar>
+</header>
+
+<section class="flex grow">
+  <aside [tuiNavigationAside]="service.sidebarExpanded">
+    <app-layout-aside-menu
+      [sidebarExpanded]="service.sidebarExpanded"
+      [menu]="service.menu"
+    />
+    <footer>
+      <button
+        tuiButton
+        [iconLeft]="
+          sidebarExpanded ? 'tuiIconChevronLeft' : 'tuiIconChevronRight'
+        "
+        (click)="service.toggleSidebar()"
+      >
+        Скрыть
+      </button>
+    </footer>
+  </aside>
+
+  <main tuiNavigationMain>
+    <router-outlet />
+  </main>
+</section>

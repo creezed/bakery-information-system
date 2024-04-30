@@ -1,0 +1,22 @@
+<table tuiTable class="tui-table" [columns]="columns">
+  <thead>
+    <tr tuiThGroup class="tui-table__tr tui-table__tr_border_none">
+      <th class="tui-table__th" tuiTh [resizable]="true">Наименование</th>
+      <th class="tui-table__th" tuiTh>Артикул</th>
+    </tr>
+  </thead>
+  <tbody tuiTbody [data]="mock">
+    <tr
+      class="tui-table__tr tui-table__tr_border_none"
+      *ngFor="let item of mock"
+      tuiTr
+    >
+      <td class="tui-table__td" *tuiCell="'name'" tuiTd>
+        {{ item.name }}
+      </td>
+      <td class="tui-table__td" *tuiCell="'vendorCode'" tuiTd>
+        {{ item.vendorCode }}
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,46 @@
+<nav tuiNavigationNav class="sticky">
+  <a routerLink=".">
+    <tui-icon icon="tuiIconChevronLeft" />
+    Назад
+  </a>
+  /
+  <span tuiNavigationLogo>
+    <span tuiFade>Groups</span>
+  </span>
+  <hr />
+  <tui-tabs-with-more
+    *ngIf="tabConnectors.length"
+    [(activeItemIndex)]="activeItemIndex"
+  >
+    <ng-container
+      *ngFor="let tab of tabConnectors; first as first; index as index"
+    >
+      <ng-container *ngIf="tab.uiPageTab || defaultTabs[index] as tabName">
+        <a
+          *tuiItem
+          routerLinkActive
+          tuiTab
+          [routerLink]="first ? './' : (tabName | tuiReplace : from : to)"
+          [routerLinkActiveOptions]="{ exact: first }"
+        >
+          {{ tabName }}
+        </a>
+      </ng-container>
+    </ng-container>
+  </tui-tabs-with-more>
+  <ng-container *ngIf="actions" [ngTemplateOutlet]="actions.template" />
+</nav>
+
+<div class="grow py-4">
+  <tui-scrollbar class="scrollbar">
+    <div tuiFade="vertical" tuiScrollable class="content">
+      <ng-content></ng-content>
+    </div>
+  </tui-scrollbar>
+  <ng-container *ngFor="let tab of tabConnectors; index as index">
+    <ng-container
+      *ngIf="index === activeItemIndex"
+      [ngTemplateOutlet]="tab.template"
+    />
+  </ng-container>
+</div>

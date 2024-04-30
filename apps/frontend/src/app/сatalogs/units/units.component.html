@@ -1,0 +1,24 @@
+<ui-page header="units">
+  <ng-template uiPageTab="Основное">
+    <ui-table [columns]="columns" [actions]="actions" />
+    <ng-template let-row #actions="polymorpheus" [polymorpheus]="rowContext">
+      <span>{{ row.name }}</span>
+    </ng-template>
+  </ng-template>
+
+  <ng-template uiPageActions>
+    <ng-container *ngFor="let command of commands">
+      <button
+        tuiIconButton
+        type="button"
+        [icon]="command.icon"
+        appearance="flat"
+        size="s"
+        shape="rounded"
+        (click)="command.command(undefined)"
+      >
+        {{ command.label }}
+      </button>
+    </ng-container>
+  </ng-template>
+</ui-page>

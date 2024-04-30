@@ -1,0 +1,15 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.table {
+  width: 100%;
+  flex-grow: 1;
+}
+
+.table-pagination {
+  flex-shrink: 0;
+}

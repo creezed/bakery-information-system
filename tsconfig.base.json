@@ -1,0 +1,32 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@bakery-information-system/api-client": [
+        "libs/web/api-client/src/index.ts"
+      ],
+      "@bakery-information-system/paginator": [
+        "libs/api/paginator/src/index.ts"
+      ],
+      "@bakery-information-system/prisma-db": [
+        "libs/api/prisma-db/src/index.ts"
+      ],
+      "@bakery-information-system/sahred": ["libs/sahred/src/index.ts"],
+      "@bakery-information-system/ui": ["libs/web/ui/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

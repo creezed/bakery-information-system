@@ -1,0 +1,26 @@
+{
+  "name": "sahred",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/sahred/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/sahred",
+        "main": "libs/sahred/src/index.ts",
+        "tsConfig": "libs/sahred/tsconfig.lib.json",
+        "assets": ["libs/sahred/*.md"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/sahred/jest.config.ts"
+      }
+    }
+  }
+}

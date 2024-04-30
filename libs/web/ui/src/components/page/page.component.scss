@@ -1,0 +1,21 @@
+@use '@taiga-ui/core/styles/taiga-ui-local';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.scrollbar {
+  margin: 0 -0.25rem;
+}
+
+.content {
+  @include taiga-ui-local.scrollbar-hidden();
+
+  height: 100%;
+  padding: 0 0.25rem;
+  overflow: auto;
+}

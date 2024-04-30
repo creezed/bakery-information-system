@@ -1,0 +1,68 @@
+<ng-container
+  *ngIf="!item.children"
+  [ngTemplateOutlet]="item.routerLink ? link : button"
+  [ngTemplateOutletContext]="{ $implicit: item }"
+></ng-container>
+
+<ng-container
+  *ngIf="item.children"
+  [ngTemplateOutlet]="subMenu"
+  [ngTemplateOutletContext]="{ $implicit: item }"
+></ng-container>
+
+<ng-template #link let-menuItem>
+  <a
+    [iconLeft]="menuItem.iconLeft"
+    [iconRight]="menuItem.iconRight"
+    [routerLink]="menuItem.routerLink"
+    routerLinkActive="active"
+    tuiAppearance="flat"
+    tuiButton
+  >
+    {{ menuItem.label }}
+  </a>
+</ng-template>
+
+<ng-template #button let-menuItem>
+  <button
+    [iconLeft]="menuItem.iconLeft"
+    [iconRight]="menuItem.iconRight"
+    tuiButton
+  >
+    {{ menuItem.label }}
+  </button>
+</ng-template>
+
+<ng-template #subMenu let-menuItem>
+  <tui-hosted-dropdown
+    [canOpen]="!sidebarExpanded"
+    [content]="dropdown"
+    [sided]="true"
+    [(open)]="open"
+  >
+    <button
+      [iconLeft]="menuItem.iconLeft"
+      [iconRight]="menuItem.iconRight"
+      tuiButton
+      (click)="submenu = !submenu"
+    >
+      {{ menuItem.label }}
+    </button>
+    <ng-template #dropdown>
+      <tui-data-list size="s">
+        <ng-container *ngFor="let menuItem of menuItem.children">
+          <button tuiOption>{{ menuItem.label }}</button>
+        </ng-container>
+      </tui-data-list>
+    </ng-template>
+  </tui-hosted-dropdown>
+
+  <tui-expand [expanded]="submenu && sidebarExpanded">
+    <ng-container *ngFor="let item of menuItem.children">
+      <app-layout-aside-menu-item
+        [item]="item"
+        [sidebarExpanded]="sidebarExpanded"
+      />
+    </ng-container>
+  </tui-expand>
+</ng-template>
