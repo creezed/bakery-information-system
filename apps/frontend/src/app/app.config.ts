@@ -1,5 +1,5 @@
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { TuiRootModule } from '@taiga-ui/core';
+import { TUI_THEME, TuiRootModule } from '@taiga-ui/core';
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
@@ -12,6 +12,10 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    {
+      provide: TUI_THEME,
+      useValue: 'tinkoff',
+    },
     provideAnimations(),
     provideRouter(appRoutes),
     provideHttpClient(),

@@ -1,34 +1,35 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  TrackByFunction,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UnitsDataSourceService } from './services';
 import {
   ColumnModel,
-  ConfirmOptions,
-  DELETE_COMMAND_TOKEN,
+  DeleteCommand,
   PageActionsDirective,
   PageComponent,
-  PageDetailsService,
   PageTabDirective,
+  provideDeleteCommand,
   provideTableQuery,
+  provideToCreateCommand,
+  provideToEditCommand,
+  provideUpdateCommand,
   TableComponent,
+  ToCreateCommand,
+  ToEditCommand,
 } from '@bakery-information-system/web/ui';
-import {
-  ToUpdateCommand,
-  UnitDeleteCommand,
-  UnitOpenCreateModalCommand,
-} from './commands';
 import { TuiContextWithImplicit, TuiLetModule } from '@taiga-ui/cdk';
 import { TuiButtonModule } from '@taiga-ui/core';
 import { Unit } from './models/unit.model';
-import { UnitTableQueryStrategy } from './table-strategy';
-import {
-  PolymorpheusComponent,
-  PolymorpheusModule,
-} from '@tinkoff/ng-polymorpheus';
+import { UnitTableQueryDataProvider } from './table-data-provider';
+import { PolymorpheusModule } from '@tinkoff/ng-polymorpheus';
 import { RouterOutlet } from '@angular/router';
+import { RemoveUnit, UpdateUnit } from './state';
+import { UnitsCreateModalComponent } from './create-modal/units-create-modal.component';
 import { UnitsDetailsComponent } from './details/units-details.component';
-import { take } from 'rxjs';
-import { RemoveUnit } from './state';
+import { TuiSelectModule } from '@taiga-ui/kit';
 
 @Component({
   selector: 'app-units',
@@ -43,40 +44,32 @@ import { RemoveUnit } from './state';
     TableComponent,
     PolymorpheusModule,
     RouterOutlet,
+    TuiSelectModule,
   ],
   templateUrl: './units.component.html',
   styleUrl: './units.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    provideTableQuery(UnitTableQueryStrategy),
-    {
-      provide: DELETE_COMMAND_TOKEN,
-      useValue: {
-        label: (unit: Unit) => `Удалить единицу измерения ${unit.fullName}?`,
-        action: RemoveUnit,
-        appearance: {
-          label: 'Удалить',
-          icon: 'tuiIconTrash',
-        },
-        description: () => 'Восстановить единицу измерения будет невозможно',
-        yesText: 'Удалить',
-        noText: 'Отменить',
-      } as ConfirmOptions<Unit>,
-    },
-    UnitDeleteCommand,
-    ToUpdateCommand,
-    UnitOpenCreateModalCommand,
+    provideTableQuery(UnitTableQueryDataProvider),
+    provideDeleteCommand(RemoveUnit, {
+      label: (unit: Unit) => `Удалить единицу измерения ${unit.fullName}?`,
+      description: () => 'Восстановить единицу измерения будет невозможно',
+    }),
+    provideUpdateCommand(UpdateUnit, {
+      label: () => `Сохранить изменения?`,
+    }),
+    provideToCreateCommand({ component: UnitsCreateModalComponent }),
+    provideToEditCommand({
+      component: UnitsDetailsComponent,
+    }),
   ],
 })
 export class UnitsComponent {
-  private readonly _dataSourceService = inject(UnitsDataSourceService);
-  private readonly _pageDetailsService = inject(PageDetailsService);
+  protected readonly toCreate = inject(ToCreateCommand);
 
-  protected readonly createModalCommand = inject(UnitOpenCreateModalCommand);
+  protected readonly deleteCommand = inject(DeleteCommand);
 
-  protected readonly deleteCommand = inject(UnitDeleteCommand);
-
-  protected readonly toUpdateCommand = inject(ToUpdateCommand);
+  protected readonly toEditCommand = inject<ToEditCommand<Unit>>(ToEditCommand);
 
   protected readonly columns: ColumnModel<Unit>[] = [
     {
@@ -93,15 +86,7 @@ export class UnitsComponent {
     },
   ];
 
-  protected toUpdate(unit: Unit) {
-    this._pageDetailsService
-      .open({
-        content: new PolymorpheusComponent(UnitsDetailsComponent),
-        data: { unit },
-      })
-      .pipe(take(1))
-      .subscribe();
-  }
+  protected trackByRow: TrackByFunction<Unit> = (_index, unit) => unit.id;
 
   protected readonly rowContext!: TuiContextWithImplicit<Unit>;
 }

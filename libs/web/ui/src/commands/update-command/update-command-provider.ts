@@ -1,16 +1,33 @@
-import { Provider, Type } from '@angular/core';
-import { UpdateCommand, UpdateOptions } from './update-command';
-import { UPDATE_COMMAND_OPTIONS } from './update-command-options';
+import { UPDATE_COMMAND_TOKEN } from './update-command.token';
+import { Provider } from '@angular/core';
+import { ConfirmOptions } from '../confirm-command';
+import { ActionType } from '@ngxs/store/src/actions/symbols';
+import { UpdateCommand } from './update-command';
+
+interface UpdateOptions<TParams> {
+  label: (params: TParams) => string;
+  yesText: string;
+  noText: string;
+}
 
 export function provideUpdateCommand<TParams = unknown>(
-  command: Type<UpdateCommand<TParams>>,
-  options: UpdateOptions<TParams>
+  action: ActionType,
+  options?: Partial<UpdateOptions<TParams>>
 ): Provider[] {
   return [
     {
-      provide: UPDATE_COMMAND_OPTIONS,
-      useValue: options,
+      provide: UPDATE_COMMAND_TOKEN,
+      useValue: {
+        label: options?.label ? options.label : () => `Сохранить изменения?`,
+        action: action,
+        appearance: {
+          label: 'Сохранить',
+          icon: 'icons8::save',
+        },
+        yesText: options?.yesText || 'Сохранить',
+        noText: options?.noText || 'Отменить',
+      } as ConfirmOptions<TParams>,
     },
-    command,
+    UpdateCommand,
   ];
 }

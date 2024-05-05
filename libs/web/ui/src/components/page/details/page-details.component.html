@@ -15,13 +15,13 @@
     </ng-container>
   </tui-tabs-with-more>
 
-  <div class="flex items-center gap-1">
+  <div class="flex items-center gap-2">
     <ng-container *ngIf="actions" [ngTemplateOutlet]="actions.template" />
     <button
       tuiIconButton
       type="button"
-      appearance="secondary"
-      icon="tuiIconClose"
+      appearance="flat"
+      icon="icons8::close"
       shape="rounded"
       size="s"
       (click)="close()"

@@ -1,1 +1,1 @@
-export { TABLE_QUERY_STRATEGY_TOKEN } from './table-query-strategy.token';
+export { TABLE_QUERY_DATA_PROVIDER_TOKEN } from './table-query-data-provider.token';

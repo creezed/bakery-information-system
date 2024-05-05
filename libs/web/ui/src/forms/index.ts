@@ -1,1 +1,1 @@
-export type { ModelToFormGroupType } from './types';
+export * from './types';

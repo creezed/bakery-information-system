@@ -1,6 +1,0 @@
-import { InjectionToken } from '@angular/core';
-import { ConfirmOptions } from '../commands';
-
-export const DELETE_COMMAND_TOKEN = new InjectionToken<ConfirmOptions<unknown>>(
-  'delete command'
-);

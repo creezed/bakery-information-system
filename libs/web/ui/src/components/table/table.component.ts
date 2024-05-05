@@ -3,13 +3,14 @@ import {
   Component,
   inject,
   Input,
+  TrackByFunction,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   TuiTableModule,
   TuiTablePaginationModule,
 } from '@taiga-ui/addon-table';
-import { TuiLetModule, tuiPure } from '@taiga-ui/cdk';
+import { TuiLetModule } from '@taiga-ui/cdk';
 import { ColumnModel } from './interfaces/column.model';
 import { TableQueryService } from './services';
 import { TuiLoaderModule, TuiScrollbarModule } from '@taiga-ui/core';
@@ -17,6 +18,7 @@ import {
   PolymorpheusModule,
   PolymorpheusTemplate,
 } from '@tinkoff/ng-polymorpheus';
+import { identity } from 'rxjs';
 
 @Component({
   selector: 'ui-table',
@@ -41,14 +43,8 @@ export class TableComponent<TModel> {
   public columns: ColumnModel<TModel>[] = [];
 
   @Input()
-  public actions?: PolymorpheusTemplate;
+  public trackBy: TrackByFunction<TModel> = identity;
 
-  @tuiPure
-  get tableColumns(): string[] {
-    const columns = this.columns.map((col) => col.field);
-    if (this.actions) {
-      columns.push('actions');
-    }
-    return columns;
-  }
+  @Input()
+  public actions?: PolymorpheusTemplate;
 }

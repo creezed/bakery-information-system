@@ -1,40 +1,39 @@
 <ui-page header="Единицы измерения">
   <ng-template uiPageTab="Таблица">
-    <ui-table [columns]="columns" [actions]="actions" />
+    <ui-table [columns]="columns" [actions]="actions" [trackBy]="trackByRow" />
     <ng-template let-row #actions="polymorpheus" [polymorpheus]="rowContext">
       <button
-        *tuiLet="toUpdateCommand.command as command"
         tuiIconButton
         type="button"
-        [icon]="command.icon"
+        [icon]="toEditCommand.appearance.icon"
         appearance="flat"
         size="s"
         shape="rounded"
-        (click)="command.execute(row)"
+        (click)="toEditCommand.execute(row)"
       ></button>
       <button
-        *tuiLet="deleteCommand.command as command"
         tuiIconButton
         type="button"
-        [icon]="command.icon"
+        [icon]="deleteCommand.appearance.icon"
         appearance="flat"
         size="s"
         shape="rounded"
-        (click)="command.execute(row)"
+        (click)="deleteCommand.execute(row)"
       ></button>
     </ng-template>
   </ng-template>
 
   <ng-template uiPageActions>
     <button
-      *tuiLet="createModalCommand.command as command"
       tuiIconButton
       type="button"
-      [icon]="command.icon"
+      [icon]="toCreate.appearance.icon"
       appearance="flat"
       size="s"
       shape="rounded"
-      (click)="command.execute(undefined)"
+      (click)="toCreate.execute()"
     ></button>
   </ng-template>
 </ui-page>
+
+<router-outlet name="dialog" />

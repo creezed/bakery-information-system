@@ -1,15 +1,18 @@
 import { inject, Injectable } from '@angular/core';
 import { UnitsService } from '@bakery-information-system/web/api-client';
 import { CreateUnitModel } from '../models/create-unit.model';
+import {
+  JsonPatchModel,
+  PaginatedQueryModel,
+} from '@bakery-information-system/web/shared';
 import { delay } from 'rxjs';
-import { JsonPatchModel } from '@bakery-information-system/web/shared';
 
 @Injectable({ providedIn: 'root' })
 export class UnitsDataSourceService {
   private readonly _api = inject(UnitsService);
 
-  public getAll() {
-    return this._api.unitsControllerGetAll().pipe(delay(1000));
+  public getAll(paginated?: PaginatedQueryModel) {
+    return this._api.unitsControllerGetAll(paginated).pipe(delay(1000));
   }
 
   public getOne(id: string) {
@@ -17,11 +20,11 @@ export class UnitsDataSourceService {
   }
 
   public create(params: CreateUnitModel) {
-    return this._api.unitsControllerCreate({ body: params }).pipe(delay(1000));
+    return this._api.unitsControllerCreate({ body: params });
   }
 
   public remove(id: string) {
-    return this._api.unitsControllerDelete({ id }).pipe(delay(1000));
+    return this._api.unitsControllerDelete({ id });
   }
 
   public update(id: string, patch: JsonPatchModel[]) {

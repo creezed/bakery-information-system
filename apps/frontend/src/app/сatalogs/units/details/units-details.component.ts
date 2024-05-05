@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   inject,
@@ -10,24 +9,19 @@ import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { TuiDestroyService, TuiLetModule } from '@taiga-ui/cdk';
 import { Unit } from '../models/unit.model';
 import {
-  actionIsLoading,
+  DeleteCommand,
   PageDetailActionsDirective,
   PageDetailItem,
   PageDetailsComponent,
   PageDetailTabDirective,
+  UpdateCommand,
 } from '@bakery-information-system/web/ui';
 import { UnitsDetailsMainComponent } from './main/units-details-main.component';
 import { TuiButtonModule, TuiLoaderModule } from '@taiga-ui/core';
-import { LoadUnit } from '../state';
-import { UnitDeleteCommand } from '../commands';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { LoadUnit, RemoveUnit, UpdateUnit } from '../state';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { filter, takeUntil, tap } from 'rxjs';
-import { Store } from '@ngxs/store';
+import { Actions, ofActionSuccessful, Store } from '@ngxs/store';
 import { UnitsStateSelectors } from '../state/units-state.selectors';
 
 @Component({
@@ -47,43 +41,77 @@ import { UnitsStateSelectors } from '../state/units-state.selectors';
   templateUrl: './units-details.component.html',
   styleUrl: './units-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    TuiDestroyService,
-    // {
-    //   provide: UPDATE_COMMAND_TOKEN,
-    //   useValue: {
-    //     label: () => `Сохранить изменения?`,
-    //     action: UpdateUnit,
-    //     appearance: {
-    //       label: 'Обновить',
-    //       icon: 'tuiIconSave',
-    //     },
-    //     yesText: 'Сохранить',
-    //     noText: 'Отменить',
-    //   } as ConfirmOptions<UnitUpdateParams>,
-    // },
-    // UnitUpdateCommand,
-  ],
+  providers: [TuiDestroyService],
 })
-export class UnitsDetailsComponent implements OnInit, AfterViewInit {
+export class UnitsDetailsComponent implements OnInit, OnInit {
   private readonly _formBuilder = inject(FormBuilder);
 
-  private readonly destroy$ = inject(TuiDestroyService, { self: true });
-
   private readonly _store = inject(Store);
+
+  private readonly _destroy$ = inject(TuiDestroyService, { self: true });
 
   protected readonly detail =
     inject<PageDetailItem<Unit>>(POLYMORPHEUS_CONTEXT);
 
-  // protected readonly updateCommand = inject(UnitUpdateCommand);
+  protected readonly updateCommand = inject(UpdateCommand);
 
-  protected readonly deleteCommand = inject(UnitDeleteCommand);
+  protected readonly deleteCommand = inject(DeleteCommand);
 
-  protected readonly isLoading$ = actionIsLoading(LoadUnit);
+  protected readonly isLoading$ = this._store.select(
+    UnitsStateSelectors.unitLoading
+  );
 
-  protected form!: FormGroup;
+  private readonly actions$ = inject(Actions);
 
-  public ngAfterViewInit(): void {
+  protected readonly selectedUnit$ = this._store
+    .select(UnitsStateSelectors.unit)
+    .pipe(
+      filter(Boolean),
+      tap({
+        next: (res) => {
+          this.form.patchValue({ common: res });
+        },
+      })
+    );
+
+  protected form = this._formBuilder.group({
+    common: this._formBuilder.group({
+      code: this._formBuilder.control('', {
+        validators: [Validators.required],
+        nonNullable: true,
+      }),
+      name: this._formBuilder.control('', {
+        validators: [Validators.required],
+        nonNullable: true,
+      }),
+      fullName: this._formBuilder.control('', {
+        validators: [Validators.required],
+        nonNullable: true,
+      }),
+    }),
+  });
+
+  public ngOnInit(): void {
+    this.loadUnit();
+    this.triggerClose();
+  }
+
+  protected updateUnit(selectedUnit: Unit): void {
+    if (!this.form.valid) {
+      return;
+    }
+
+    this.updateCommand.execute({
+      id: selectedUnit.id,
+      model: this.form.getRawValue().common,
+    });
+  }
+
+  protected deleteUnit(selectedUnit: Unit): void {
+    this.deleteCommand.execute(selectedUnit);
+  }
+
+  private loadUnit(): void {
     const id = this.detail.data?.id;
 
     if (!id) {
@@ -92,39 +120,16 @@ export class UnitsDetailsComponent implements OnInit, AfterViewInit {
     this._store.dispatch(new LoadUnit({ id }));
   }
 
-  public ngOnInit(): void {
-    this.initForm();
-
-    this._store
-      .select(UnitsStateSelectors.unit)
+  private triggerClose(): void {
+    this.actions$
       .pipe(
-        filter(Boolean),
-        tap({
-          next: (res) => {
-            this.form.patchValue({ common: res });
-          },
-        }),
-        takeUntil(this.destroy$)
+        ofActionSuccessful(RemoveUnit, UpdateUnit),
+        takeUntil(this._destroy$)
       )
-      .subscribe();
-  }
-
-  private initForm(): void {
-    this.form = this._formBuilder.group({
-      common: this._formBuilder.group({
-        code: this._formBuilder.control('', {
-          validators: [Validators.required],
-          nonNullable: true,
-        }),
-        name: this._formBuilder.control('', {
-          validators: [Validators.required],
-          nonNullable: true,
-        }),
-        fullName: this._formBuilder.control('', {
-          validators: [Validators.required],
-          nonNullable: true,
-        }),
-      }),
-    });
+      .subscribe((res) => {
+        if (res.payload.id === this.detail.data?.id) {
+          this.detail.completeWith(true);
+        }
+      });
   }
 }

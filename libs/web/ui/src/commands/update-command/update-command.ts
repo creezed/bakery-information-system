@@ -1,26 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { Store } from '@ngxs/store';
-import { TuiDialogService } from '@taiga-ui/core';
-import { ActionType } from '@ngxs/store/src/actions/symbols';
-import { AbstractCommand, CommandAppearance } from '../../abstract';
-
-export interface UpdateOptions<TParams> {
-  label: (params: TParams) => string;
-  action: ActionType;
-  description?: (params: TParams) => string;
-}
+import { UPDATE_COMMAND_TOKEN } from './update-command.token';
+import { ConfirmCommand } from '../confirm-command';
 
 @Injectable()
-export class UpdateCommand<TParams> extends AbstractCommand<TParams> {
-  private readonly _store = inject(Store);
-  private readonly _dialogService = inject(TuiDialogService);
-
-  appearance(): CommandAppearance {
-    return {
-      label: 'Обновить',
-      icon: 'tuiIconSave',
-    };
+export class UpdateCommand<TParams> extends ConfirmCommand<TParams> {
+  public constructor() {
+    super(inject(UPDATE_COMMAND_TOKEN));
   }
-
-  execute(params: TParams): void {}
 }

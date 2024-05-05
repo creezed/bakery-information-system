@@ -1,1 +1,1 @@
-export { ModelToFormGroupType } from './model-to-form-group.type';
+export type { ModelToFormGroupType } from './model-to-form-group.type';

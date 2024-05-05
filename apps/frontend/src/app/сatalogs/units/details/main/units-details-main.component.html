@@ -21,12 +21,12 @@
         [error]="[] | tuiFieldError | async"
       />
     </div>
-  </div>
-  <div class="tui-form__row">
-    <tui-input formControlName="name">
-      Наименование
-      <input tuiTextfield type="text" />
-    </tui-input>
-    <tui-error formControlName="name" [error]="[] | tuiFieldError | async" />
+    <div class="tui-form__multi-field">
+      <tui-input formControlName="name">
+        Наименование
+        <input tuiTextfield type="text" />
+      </tui-input>
+      <tui-error formControlName="name" [error]="[] | tuiFieldError | async" />
+    </div>
   </div>
 </ng-container>

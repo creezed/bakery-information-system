@@ -31,7 +31,7 @@ export abstract class ConfirmCommand<TParams> extends AbstractCommand<TParams> {
     this.isLoading$ = actionIsLoading(this.Action);
   }
 
-  appearance(): CommandAppearance {
+  get appearance(): CommandAppearance {
     return this._options.appearance;
   }
 
@@ -41,7 +41,7 @@ export abstract class ConfirmCommand<TParams> extends AbstractCommand<TParams> {
 
     this._dialogService
       .open<boolean>(DIALOG_CONFIRM, {
-        size: 'auto',
+        size: 's',
         data: {
           label: label(params),
           description: description?.(params),

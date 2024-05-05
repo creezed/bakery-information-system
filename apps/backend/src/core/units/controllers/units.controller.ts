@@ -15,6 +15,7 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import {
@@ -23,7 +24,7 @@ import {
   Paginated,
   PaginateQuery,
 } from '@bakery-information-system/paginator';
-import { JsonPatchDto } from '../../../dtos';
+import { JsonPatchDto, PaginatedQueryDto } from '../../../dtos';
 
 @ApiTags('Units')
 @Controller('units')
@@ -31,6 +32,7 @@ export class UnitsController {
   constructor(private readonly unitsService: UnitsService) {}
 
   @Get()
+  @ApiQuery({ type: PaginatedQueryDto })
   @ApiOkPaginatedResponse(Unit)
   @ApiOperation({ summary: 'get all units' })
   public getAll(@Paginate() query: PaginateQuery): Promise<Paginated<Unit>> {

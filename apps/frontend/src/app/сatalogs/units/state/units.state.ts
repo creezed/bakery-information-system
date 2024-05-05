@@ -12,15 +12,19 @@ import {
 } from './units.actions';
 import { tap } from 'rxjs';
 import { UpdateUnitModel } from '../models/update-unit.model';
-import { compare } from 'fast-json-patch';
 import { JsonPatchModel } from '@bakery-information-system/web/shared';
-import { UnitUpdateParams } from '../commands';
+import { compare } from 'fast-json-patch';
 
 @State<UnitsStateModel>({
   name: 'units',
   defaults: {
-    units: [],
+    units: {
+      items: [],
+      total: 0,
+    },
+    unitsLoading: false,
     selectedUnit: null,
+    selectedUnitLoading: false,
   },
 })
 @Injectable()
@@ -28,10 +32,24 @@ export class UnitsState {
   private readonly _dataSourceService = inject(UnitsDataSourceService);
 
   @Action(LoadUnits)
-  public loadUnits(ctx: StateContext<UnitsStateModel>) {
-    return this._dataSourceService
-      .getAll()
-      .pipe(tap((res) => ctx.patchState({ units: res.data })));
+  public loadUnits(ctx: StateContext<UnitsStateModel>, { payload }: LoadUnits) {
+    const paginated = payload?.paginated;
+
+    ctx.patchState({
+      unitsLoading: true,
+    });
+
+    return this._dataSourceService.getAll(paginated).pipe(
+      tap((res) =>
+        ctx.patchState({
+          units: {
+            items: res.data,
+            total: res.meta.totalItems,
+          },
+          unitsLoading: false,
+        })
+      )
+    );
   }
 
   @Action(CreateUnit)
@@ -39,12 +57,17 @@ export class UnitsState {
     ctx: StateContext<UnitsStateModel>,
     { payload }: CreateUnit
   ) {
+    const state = ctx.getState();
+
     return this._dataSourceService.create(payload.model).pipe(
       tap({
         next: (res) =>
           ctx.setState(
             patch({
-              units: append([res]),
+              units: patch({
+                items: append([res]),
+                total: state.units.total + 1,
+              }),
             })
           ),
       })
@@ -56,9 +79,15 @@ export class UnitsState {
     ctx: StateContext<UnitsStateModel>,
     { payload: { id } }: LoadUnit
   ) {
+    ctx.patchState({ selectedUnitLoading: true });
+
     return this._dataSourceService
       .getOne(id)
-      .pipe(tap((unit) => ctx.patchState({ selectedUnit: unit })));
+      .pipe(
+        tap((unit) =>
+          ctx.patchState({ selectedUnit: unit, selectedUnitLoading: false })
+        )
+      );
   }
 
   @Action(RemoveUnit)
@@ -66,12 +95,17 @@ export class UnitsState {
     ctx: StateContext<UnitsStateModel>,
     { payload: { id } }: RemoveUnit
   ) {
+    const state = ctx.getState();
+
     return this._dataSourceService.remove(id).pipe(
       tap({
         next: () =>
           ctx.setState(
             patch({
-              units: removeItem((unit) => unit.id === id),
+              units: patch({
+                items: removeItem((unit) => unit.id === id),
+                total: state.units.total - 1,
+              }),
             })
           ),
       })
@@ -81,7 +115,7 @@ export class UnitsState {
   @Action(UpdateUnit)
   public updateUnit(
     ctx: StateContext<UnitsStateModel>,
-    { id, model }: UnitUpdateParams
+    { payload: { id, model } }: UpdateUnit
   ) {
     const { selectedUnit } = ctx.getState();
 
@@ -105,7 +139,10 @@ export class UnitsState {
         next: (res) =>
           ctx.setState(
             patch({
-              units: updateItem((unit) => unit.id === res.id, res),
+              units: patch({
+                items: updateItem((unit) => unit.id === res.id, res),
+              }),
+              selectedUnit: res,
             })
           ),
       })

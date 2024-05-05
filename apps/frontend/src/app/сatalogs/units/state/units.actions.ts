@@ -1,8 +1,11 @@
 import { CreateUnitModel } from '../models/create-unit.model';
-import { UnitUpdateParams } from '../commands';
+import { UpdateUnitModel } from '../models/update-unit.model';
+import { PaginatedQueryModel } from '@bakery-information-system/web/shared';
 
 export class LoadUnits {
   public static type = '[UNITS] load units';
+
+  public constructor(public payload?: { paginated?: PaginatedQueryModel }) {}
 }
 
 export class LoadUnit {
@@ -18,7 +21,7 @@ export class CreateUnit {
 
 export class UpdateUnit {
   public static type = '[UNITS] update unit';
-  constructor(public payload: UnitUpdateParams) {}
+  constructor(public payload: { id: string; model: UpdateUnitModel }) {}
 }
 
 export class RemoveUnit {

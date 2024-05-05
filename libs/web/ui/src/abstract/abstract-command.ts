@@ -12,12 +12,5 @@ export interface CommandModel<TParams> extends CommandAppearance {
 @Injectable()
 export abstract class AbstractCommand<TParams = undefined> {
   abstract execute(params: TParams): void;
-  abstract appearance(): CommandAppearance;
-
-  public get command(): CommandModel<TParams> {
-    return {
-      ...this.appearance(),
-      execute: (params: TParams) => this.execute(params),
-    };
-  }
+  abstract get appearance(): CommandAppearance;
 }

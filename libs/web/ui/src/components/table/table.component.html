@@ -1,36 +1,45 @@
 <ng-container *tuiLet="service.data$ | async as data">
-  <tui-scrollbar>
+  <tui-scrollbar class="grow">
     <tui-loader
       size="xl"
       class="h-full"
       [overlay]="true"
       [showLoader]="!!(service.isLoading$ | async)"
     >
-      <table tuiTable [columns]="tableColumns" class="table">
+      <table class="tui-table">
         <thead>
-          <tr tuiThGroup>
-            <th *ngFor="let col of columns" tuiTh [resizable]="true">
+          <tr class="tui-table__tr tui-table__tr_hover_disabled">
+            <th
+              *ngFor="let col of columns"
+              class="tui-table__th tui-table__th_font-size_l"
+            >
               {{ col.displayName }}
             </th>
-            <th *tuiHead="'actions'" tuiTh [sorter]="null">Действия</th>
+            <th *ngIf="actions" class="tui-table__th tui-table__th_font-size_l">
+              Действия
+            </th>
           </tr>
         </thead>
-        <tbody *ngIf="data" tuiTbody [data]="data">
-          <tr *ngFor="let row of data" tuiTr>
+        <tbody *ngIf="data">
+          <tr
+            *ngFor="let row of data; trackBy: trackBy"
+            class="tui-table__tr tui-table__tr_hover_disabled"
+          >
             <ng-container *ngFor="let col of columns">
-              <ng-container
-                *polymorpheusOutlet="
-                  col.component ?? plain;
-                  context: { $implicit: row[col.field] }
-                "
-              />
-              <td tuiTd>{{ row[col.field] }}</td>
+              <td class="tui-table__td">
+                <ng-container
+                  *polymorpheusOutlet="
+                    col.component ?? plain;
+                    context: { $implicit: row[col.field] }
+                  "
+                />
+              </td>
               <ng-template #plain let-text>
                 {{ text }}
               </ng-template>
             </ng-container>
             <ng-container *ngIf="actions">
-              <td *tuiCell="'actions'" tuiTd>
+              <td class="tui-table__td">
                 <ng-container
                   *polymorpheusOutlet="actions; context: { $implicit: row }"
                 />
@@ -42,10 +51,12 @@
     </tui-loader>
   </tui-scrollbar>
 </ng-container>
+
 <ng-container *tuiLet="service.total$ | async as total">
   <tui-table-pagination
-    *ngIf="total !== null"
+    *ngIf="total"
     [total]="total"
+    (paginationChange)="service.paginationChange($event)"
     class="table-pagination"
   />
 </ng-container>

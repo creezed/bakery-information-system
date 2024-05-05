@@ -10,6 +10,9 @@ import { PaginatedDocumented } from '../../models/paginated-documented';
 import { Unit } from '../../models/unit';
 
 export interface UnitsControllerGetAll$Params {
+  page?: number;
+  limit?: number;
+  sortBy?: Array<any>;
 }
 
 export function unitsControllerGetAll(http: HttpClient, rootUrl: string, params?: UnitsControllerGetAll$Params, context?: HttpContext): Observable<StrictHttpResponse<PaginatedDocumented & {
@@ -17,6 +20,9 @@ export function unitsControllerGetAll(http: HttpClient, rootUrl: string, params?
 }>> {
   const rb = new RequestBuilder(rootUrl, unitsControllerGetAll.PATH, 'get');
   if (params) {
+    rb.query('page', params.page, {});
+    rb.query('limit', params.limit, {});
+    rb.query('sortBy', params.sortBy, {});
   }
 
   return http.request(

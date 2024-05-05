@@ -8,8 +8,18 @@ export abstract class UnitsStateSelectors {
     (state: UnitsStateModel) => state.units
   );
 
+  public static unitsLoading = createSelector(
+    [UnitsState],
+    (state: UnitsStateModel) => state.unitsLoading
+  );
+
   public static unit = createSelector(
     [UnitsState],
     (state: UnitsStateModel) => state.selectedUnit
+  );
+
+  public static unitLoading = createSelector(
+    [UnitsState],
+    (state: UnitsStateModel) => state.selectedUnitLoading
   );
 }
