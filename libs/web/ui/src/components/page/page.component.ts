@@ -17,9 +17,16 @@ import {
   TuiIconModule,
   TuiNavigationModule,
 } from '@taiga-ui/experimental';
-import { TuiButtonModule, TuiScrollbarModule } from '@taiga-ui/core';
+import {
+  TuiButtonModule,
+  tuiHeightCollapse,
+  TuiScrollbarModule,
+} from '@taiga-ui/core';
 import { PageActionsDirective } from './page-actions.directive';
-import { TUI_DOC_DEFAULT_TABS } from '@taiga-ui/addon-doc';
+import { DEFAULT_TABS } from '../../tokens';
+import { PageDetailsComponent } from './details';
+import { PolymorpheusModule } from '@tinkoff/ng-polymorpheus';
+import { PAGE_DETAILS } from './details/tokens/details.token';
 
 @Component({
   selector: 'ui-page',
@@ -35,23 +42,17 @@ import { TUI_DOC_DEFAULT_TABS } from '@taiga-ui/addon-doc';
     TuiButtonModule,
     TuiFadeModule,
     TuiScrollbarModule,
+    PageDetailsComponent,
+    PolymorpheusModule,
   ],
   templateUrl: './page.component.html',
   styleUrl: './page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [tuiHeightCollapse],
 })
 export class PageComponent {
   @Input()
   public header = '';
-
-  @Input()
-  public package = '';
-
-  @Input()
-  public type = '';
-
-  @Input()
-  public path = '';
 
   @ContentChildren(PageTabDirective)
   public readonly tabConnectors: QueryList<PageTabDirective> = EMPTY_QUERY;
@@ -59,9 +60,11 @@ export class PageComponent {
   @ContentChild(PageActionsDirective)
   public readonly actions?: PageActionsDirective;
 
-  protected readonly defaultTabs = inject(TUI_DOC_DEFAULT_TABS);
+  protected readonly defaultTabs = inject(DEFAULT_TABS);
 
-  public activeItemIndex = 0;
+  protected readonly details$ = inject(PAGE_DETAILS);
+
+  protected activeItemIndex = 0;
 
   protected readonly from = / /g;
   protected readonly to = '_';

@@ -1,0 +1,34 @@
+<tui-loader [showLoader]="!!(isLoading$ | async)" [overlay]="true">
+  <ui-page-details
+    *tuiLet="selectedUnit$ | async as selectedUnit"
+    [formGroup]="form"
+  >
+    <ng-template uiPageDetailTab>
+      <app-units-details-main />
+    </ng-template>
+
+    <ng-template uiPageDetailActions>
+      <ng-container *ngIf="detail.data && selectedUnit">
+        <button
+          tuiIconButton
+          type="button"
+          [icon]="updateCommand.appearance.icon"
+          appearance="flat"
+          size="s"
+          shape="rounded"
+          [disabled]="form.invalid || form.untouched || !form.dirty"
+          (click)="updateUnit(selectedUnit)"
+        ></button>
+        <button
+          tuiIconButton
+          type="button"
+          [icon]="deleteCommand.appearance.icon"
+          appearance="flat"
+          size="s"
+          shape="rounded"
+          (click)="deleteUnit(selectedUnit)"
+        ></button>
+      </ng-container>
+    </ng-template>
+  </ui-page-details>
+</tui-loader>

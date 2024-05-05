@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { Prisma, PrismaService } from '../../../prisma';
 import { Unit } from '../../../models/unit.model';
 import { CreateUnitDto } from '../dtos/create-unit.dto';
@@ -7,6 +11,8 @@ import {
   Paginated,
   PaginateQuery,
 } from '@bakery-information-system/paginator';
+import { JsonPatchDto } from '../../../dtos';
+import { applyReducer } from 'fast-json-patch/commonjs/core';
 
 @Injectable()
 export class UnitsService {
@@ -37,6 +43,18 @@ export class UnitsService {
       where: {
         id: unitId,
       },
+    });
+  }
+
+  async patch(unitId: string, dto: JsonPatchDto): Promise<Unit> {
+    const unit = await this.findOne({ where: { id: unitId } });
+    if (!unit) {
+      throw new BadRequestException('Ед. из. не найдена');
+    }
+    const updatedUnit = dto.patch.reduce(applyReducer, unit);
+    return this.prismaService.unit.update({
+      where: { id: unit.id },
+      data: updatedUnit,
     });
   }
 

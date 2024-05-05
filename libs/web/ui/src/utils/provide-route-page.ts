@@ -18,8 +18,6 @@ export function provideRoutePage({
     loadComponent,
     loadChildren,
     data: { title },
-    ...(!loadChildren && path !== ''
-      ? { children: [{ path: ':tab', loadComponent }] }
-      : {}),
+    ...(!loadChildren ? { children: [{ path: ':tab', loadComponent }] } : {}),
   };
 }

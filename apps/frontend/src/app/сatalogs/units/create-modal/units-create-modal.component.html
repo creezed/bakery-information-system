@@ -26,19 +26,32 @@
       Полное наименование
       <input tuiTextfield type="text" />
     </tui-input>
+    <tui-error
+      formControlName="fullName"
+      [error]="[] | tuiFieldError | async"
+    />
   </div>
-  <tui-error formControlName="fullName" [error]="[] | tuiFieldError | async" />
+
   <div class="tui-form__buttons">
     <button
       appearance="flat"
       size="m"
       tuiButton
+      (click)="close()"
       type="button"
       class="tui-form__button"
     >
       Отменить
     </button>
-    <button size="m" tuiButton type="submit" class="tui-form__button">
+    <button
+      [disabled]="!formValid"
+      (click)="submit()"
+      [loading]="isLoading$ | async"
+      size="m"
+      tuiButton
+      type="submit"
+      class="tui-form__button"
+    >
       Создать
     </button>
   </div>

@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { UnitsService } from '../services/units.service';
 import { Unit } from '../../../models/unit.model';
 import { CreateUnitDto } from '../dtos/create-unit.dto';
@@ -7,7 +15,7 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiResponse,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import {
@@ -16,6 +24,7 @@ import {
   Paginated,
   PaginateQuery,
 } from '@bakery-information-system/paginator';
+import { JsonPatchDto, PaginatedQueryDto } from '../../../dtos';
 
 @ApiTags('Units')
 @Controller('units')
@@ -23,6 +32,7 @@ export class UnitsController {
   constructor(private readonly unitsService: UnitsService) {}
 
   @Get()
+  @ApiQuery({ type: PaginatedQueryDto })
   @ApiOkPaginatedResponse(Unit)
   @ApiOperation({ summary: 'get all units' })
   public getAll(@Paginate() query: PaginateQuery): Promise<Paginated<Unit>> {
@@ -38,8 +48,7 @@ export class UnitsController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'delete unit' })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: 'Resource deleted successfully',
     type: Unit,
   })
@@ -56,5 +65,12 @@ export class UnitsController {
   })
   public create(@Body() dto: CreateUnitDto): Promise<Unit> {
     return this.unitsService.create(dto);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'update unit' })
+  @ApiOkResponse({ type: Unit })
+  public patch(@Param('id') id: string, @Body() dto: JsonPatchDto) {
+    return this.unitsService.patch(id, dto);
   }
 }

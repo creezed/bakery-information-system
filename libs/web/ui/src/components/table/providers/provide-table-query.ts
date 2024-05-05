@@ -1,15 +1,15 @@
-import { AbstractTableQueryStrategy } from '../abstract';
 import { Provider, Type } from '@angular/core';
-import { TABLE_QUERY_STRATEGY_TOKEN } from '../tokens';
+import { TABLE_QUERY_DATA_PROVIDER_TOKEN } from '../tokens';
 import { TableQueryService } from '../services';
+import { AbstractTableQueryDataProvider } from '../abstract';
 
 export function provideTableQuery(
-  strategy: Type<AbstractTableQueryStrategy<unknown>>
+  dataProvider: Type<AbstractTableQueryDataProvider<unknown>>
 ): Provider[] {
   return [
     {
-      provide: TABLE_QUERY_STRATEGY_TOKEN,
-      useClass: strategy,
+      provide: TABLE_QUERY_DATA_PROVIDER_TOKEN,
+      useClass: dataProvider,
     },
     TableQueryService,
   ];

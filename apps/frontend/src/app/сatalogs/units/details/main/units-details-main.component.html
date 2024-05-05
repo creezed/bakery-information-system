@@ -1,0 +1,32 @@
+<ng-container
+  formGroupName="common"
+  tuiTextfieldSize="m"
+  [tuiTextfieldCleaner]="true"
+>
+  <div class="tui-form__row tui-form__row_multi-fields">
+    <div class="tui-form__multi-field">
+      <tui-input formControlName="code">
+        Код
+        <input tuiTextfield type="text" />
+      </tui-input>
+      <tui-error formControlName="code" [error]="[] | tuiFieldError | async" />
+    </div>
+    <div class="tui-form__multi-field">
+      <tui-input formControlName="fullName">
+        Полное наименование
+        <input tuiTextfield type="text" />
+      </tui-input>
+      <tui-error
+        formControlName="fullName"
+        [error]="[] | tuiFieldError | async"
+      />
+    </div>
+    <div class="tui-form__multi-field">
+      <tui-input formControlName="name">
+        Наименование
+        <input tuiTextfield type="text" />
+      </tui-input>
+      <tui-error formControlName="name" [error]="[] | tuiFieldError | async" />
+    </div>
+  </div>
+</ng-container>

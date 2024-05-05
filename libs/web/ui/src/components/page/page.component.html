@@ -1,11 +1,6 @@
-<nav tuiNavigationNav class="sticky">
-  <a routerLink=".">
-    <tui-icon icon="tuiIconChevronLeft" />
-    Назад
-  </a>
-  /
+<nav tuiNavigationNav class="sticky shrink-0">
   <span tuiNavigationLogo>
-    <span tuiFade>Groups</span>
+    <span tuiFade>{{ header }}</span>
   </span>
   <hr />
   <tui-tabs-with-more
@@ -31,16 +26,24 @@
   <ng-container *ngIf="actions" [ngTemplateOutlet]="actions.template" />
 </nav>
 
-<div class="grow py-4">
+<div class="grow py-4 flex flex-col overflow-hidden">
   <tui-scrollbar class="scrollbar">
     <div tuiFade="vertical" tuiScrollable class="content">
       <ng-content></ng-content>
     </div>
   </tui-scrollbar>
-  <ng-container *ngFor="let tab of tabConnectors; index as index">
-    <ng-container
-      *ngIf="index === activeItemIndex"
-      [ngTemplateOutlet]="tab.template"
-    />
-  </ng-container>
+  <tui-scrollbar class="scrollbar h-full">
+    <div tuiFade="vertical" tuiScrollable class="content">
+      <ng-container *ngFor="let tab of tabConnectors; index as index">
+        <ng-container
+          *ngIf="index === activeItemIndex"
+          [ngTemplateOutlet]="tab.template"
+        />
+      </ng-container>
+    </div>
+  </tui-scrollbar>
+
+  <div *ngIf="details$ | async as item" @tuiHeightCollapse>
+    <ng-container *polymorpheusOutlet="item.content; context: item" />
+  </div>
 </div>

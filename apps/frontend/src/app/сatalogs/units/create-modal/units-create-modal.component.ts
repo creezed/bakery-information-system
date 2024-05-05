@@ -1,18 +1,27 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  TuiButtonModule,
   TuiDialogContext,
   TuiErrorModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
-import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import {
   TUI_VALIDATION_ERRORS,
   TuiFieldErrorPipeModule,
   TuiInputModule,
 } from '@taiga-ui/kit';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
+import { Store } from '@ngxs/store';
+import { CreateUnit } from '../state';
+import {
+  actionIsLoading,
+  ModelToFormGroupType,
+} from '@bakery-information-system/web/ui';
+import { CreateUnitModel } from '../models/create-unit.model';
+import { takeUntil } from 'rxjs';
+import { TuiButtonModule } from '@taiga-ui/experimental';
+import { TuiDestroyService } from '@taiga-ui/cdk';
 
 @Component({
   selector: 'app-units-create-modal',
@@ -36,26 +45,57 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
         required: 'Обязательное поле',
       },
     },
+    TuiDestroyService,
   ],
 })
 export class UnitsCreateModalComponent {
-  private readonly formBuilder = inject(FormBuilder);
-  private readonly context =
-    inject<TuiDialogContext<number, number>>(POLYMORPHEUS_CONTEXT);
+  private readonly _context =
+    inject<TuiDialogContext<boolean>>(POLYMORPHEUS_CONTEXT);
+  private readonly _formBuilder = inject(FormBuilder);
+  private readonly _store = inject(Store);
+  private readonly _destroy$ = inject(TuiDestroyService, { self: true });
 
-  protected form = this.formBuilder.group({
-    code: this.formBuilder.control(null, { validators: [Validators.required] }),
-    name: this.formBuilder.control(null, { validators: [Validators.required] }),
-    fullName: this.formBuilder.control(null, {
+  protected isLoading$ = actionIsLoading(CreateUnit);
+
+  protected form = this._formBuilder.group<
+    ModelToFormGroupType<CreateUnitModel>
+  >({
+    code: this._formBuilder.control('', {
       validators: [Validators.required],
+      nonNullable: true,
+    }),
+    name: this._formBuilder.control('', {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
+    fullName: this._formBuilder.control('', {
+      validators: [Validators.required],
+      nonNullable: true,
     }),
   });
 
-  protected get data() {
-    return this.context.data;
+  protected get formValid(): boolean {
+    return this.form.valid;
   }
 
-  protected submit() {
-    this.context.completeWith(12);
+  protected submit(): void {
+    if (!this.formValid) {
+      return;
+    }
+
+    const { code, name, fullName } = this.form.value;
+
+    if (code && name && fullName) {
+      this._store
+        .dispatch(new CreateUnit({ model: { code, name, fullName } }))
+        .pipe(takeUntil(this._destroy$))
+        .subscribe(() => {
+          this._context.completeWith(true);
+        });
+    }
+  }
+
+  protected close(): void {
+    this._context.completeWith(false);
   }
 }

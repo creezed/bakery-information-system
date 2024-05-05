@@ -19,6 +19,8 @@ import { unitsControllerGetAll } from '../fn/units/units-controller-get-all';
 import { UnitsControllerGetAll$Params } from '../fn/units/units-controller-get-all';
 import { unitsControllerGetOne } from '../fn/units/units-controller-get-one';
 import { UnitsControllerGetOne$Params } from '../fn/units/units-controller-get-one';
+import { unitsControllerPatch } from '../fn/units/units-controller-patch';
+import { UnitsControllerPatch$Params } from '../fn/units/units-controller-patch';
 
 @Injectable({ providedIn: 'root' })
 export class UnitsService extends BaseService {
@@ -162,6 +164,39 @@ export class UnitsService extends BaseService {
    */
   unitsControllerDelete(params: UnitsControllerDelete$Params, context?: HttpContext): Observable<Unit> {
     return this.unitsControllerDelete$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Unit>): Unit => r.body)
+    );
+  }
+
+  /** Path part for operation `unitsControllerPatch()` */
+  static readonly UnitsControllerPatchPath = '/api/units/{id}';
+
+  /**
+   * update unit.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `unitsControllerPatch()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  unitsControllerPatch$Response(params: UnitsControllerPatch$Params, context?: HttpContext): Observable<StrictHttpResponse<Unit>> {
+    return unitsControllerPatch(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * update unit.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `unitsControllerPatch$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  unitsControllerPatch(params: UnitsControllerPatch$Params, context?: HttpContext): Observable<Unit> {
+    return this.unitsControllerPatch$Response(params, context).pipe(
       map((r: StrictHttpResponse<Unit>): Unit => r.body)
     );
   }

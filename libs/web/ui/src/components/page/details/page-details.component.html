@@ -1,0 +1,39 @@
+<header class="flex items-center justify-between mb-4">
+  <tui-tabs-with-more
+    *ngIf="tabConnectors.length"
+    class="w-full"
+    [(activeItemIndex)]="activeItemIndex"
+  >
+    <ng-container *ngFor="let tab of tabConnectors; index as index">
+      <ng-container
+        *ngIf="tab.uiPageDetailTab || defaultTabs[index] as tabName"
+      >
+        <button *tuiItem tuiTab>
+          {{ tabName }}
+        </button>
+      </ng-container>
+    </ng-container>
+  </tui-tabs-with-more>
+
+  <div class="flex items-center gap-2">
+    <ng-container *ngIf="actions" [ngTemplateOutlet]="actions.template" />
+    <button
+      tuiIconButton
+      type="button"
+      appearance="flat"
+      icon="icons8::close"
+      shape="rounded"
+      size="s"
+      (click)="close()"
+    ></button>
+  </div>
+</header>
+
+<ng-content></ng-content>
+
+<ng-container *ngFor="let tab of tabConnectors; index as index">
+  <ng-container
+    *ngIf="index === activeItemIndex"
+    [ngTemplateOutlet]="tab.template"
+  />
+</ng-container>

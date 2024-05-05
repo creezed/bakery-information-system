@@ -29,10 +29,11 @@ export class LayoutService {
     },
     {
       label: 'Справочники',
-      iconLeft: 'tuiIconBook',
+      iconLeft: 'icons8::book',
       children: [
         {
           label: 'Единицы измерения',
+          iconLeft: 'icons8::unit',
           routerLink: 'units',
         },
       ],
