@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { UnitsService } from '../services/units.service';
 import { Unit } from '../../../models/unit.model';
 import { CreateUnitDto } from '../dtos/create-unit.dto';
@@ -7,7 +15,6 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import {
@@ -16,6 +23,7 @@ import {
   Paginated,
   PaginateQuery,
 } from '@bakery-information-system/paginator';
+import { JsonPatchDto } from '../../../dtos';
 
 @ApiTags('Units')
 @Controller('units')
@@ -38,8 +46,7 @@ export class UnitsController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'delete unit' })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: 'Resource deleted successfully',
     type: Unit,
   })
@@ -56,5 +63,12 @@ export class UnitsController {
   })
   public create(@Body() dto: CreateUnitDto): Promise<Unit> {
     return this.unitsService.create(dto);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'update unit' })
+  @ApiOkResponse({ type: Unit })
+  public patch(@Param('id') id: string, @Body() dto: JsonPatchDto) {
+    return this.unitsService.patch(id, dto);
   }
 }

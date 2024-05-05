@@ -1,21 +1,34 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UnitsDatasourceService } from './services';
+import { UnitsDataSourceService } from './services';
 import {
   ColumnModel,
-  COMMANDS_TOKEN,
+  ConfirmOptions,
+  DELETE_COMMAND_TOKEN,
   PageActionsDirective,
   PageComponent,
+  PageDetailsService,
   PageTabDirective,
   provideTableQuery,
   TableComponent,
-} from '@bakery-information-system/ui';
-import { CreateCommand } from './commands';
+} from '@bakery-information-system/web/ui';
+import {
+  ToUpdateCommand,
+  UnitDeleteCommand,
+  UnitOpenCreateModalCommand,
+} from './commands';
 import { TuiContextWithImplicit, TuiLetModule } from '@taiga-ui/cdk';
 import { TuiButtonModule } from '@taiga-ui/core';
 import { Unit } from './models/unit.model';
 import { UnitTableQueryStrategy } from './table-strategy';
-import { PolymorpheusModule } from '@tinkoff/ng-polymorpheus';
+import {
+  PolymorpheusComponent,
+  PolymorpheusModule,
+} from '@tinkoff/ng-polymorpheus';
+import { RouterOutlet } from '@angular/router';
+import { UnitsDetailsComponent } from './details/units-details.component';
+import { take } from 'rxjs';
+import { RemoveUnit } from './state';
 
 @Component({
   selector: 'app-units',
@@ -29,25 +42,41 @@ import { PolymorpheusModule } from '@tinkoff/ng-polymorpheus';
     TuiButtonModule,
     TableComponent,
     PolymorpheusModule,
+    RouterOutlet,
   ],
   templateUrl: './units.component.html',
   styleUrl: './units.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    {
-      provide: COMMANDS_TOKEN,
-      multi: true,
-      useClass: CreateCommand,
-    },
     provideTableQuery(UnitTableQueryStrategy),
+    {
+      provide: DELETE_COMMAND_TOKEN,
+      useValue: {
+        label: (unit: Unit) => `Удалить единицу измерения ${unit.fullName}?`,
+        action: RemoveUnit,
+        appearance: {
+          label: 'Удалить',
+          icon: 'tuiIconTrash',
+        },
+        description: () => 'Восстановить единицу измерения будет невозможно',
+        yesText: 'Удалить',
+        noText: 'Отменить',
+      } as ConfirmOptions<Unit>,
+    },
+    UnitDeleteCommand,
+    ToUpdateCommand,
+    UnitOpenCreateModalCommand,
   ],
 })
 export class UnitsComponent {
-  private readonly _dataSourceService = inject(UnitsDatasourceService);
+  private readonly _dataSourceService = inject(UnitsDataSourceService);
+  private readonly _pageDetailsService = inject(PageDetailsService);
 
-  protected readonly commands = inject(COMMANDS_TOKEN).map((command) =>
-    command.build()
-  );
+  protected readonly createModalCommand = inject(UnitOpenCreateModalCommand);
+
+  protected readonly deleteCommand = inject(UnitDeleteCommand);
+
+  protected readonly toUpdateCommand = inject(ToUpdateCommand);
 
   protected readonly columns: ColumnModel<Unit>[] = [
     {
@@ -64,7 +93,15 @@ export class UnitsComponent {
     },
   ];
 
-  protected readonly rowContext!: TuiContextWithImplicit<Unit>;
+  protected toUpdate(unit: Unit) {
+    this._pageDetailsService
+      .open({
+        content: new PolymorpheusComponent(UnitsDetailsComponent),
+        data: { unit },
+      })
+      .pipe(take(1))
+      .subscribe();
+  }
 
-  protected readonly units$ = this._dataSourceService.getAll();
+  protected readonly rowContext!: TuiContextWithImplicit<Unit>;
 }

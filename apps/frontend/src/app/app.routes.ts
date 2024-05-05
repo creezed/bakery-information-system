@@ -1,24 +1,20 @@
 import { Route } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
-import { provideRoutePage } from '@bakery-information-system/ui';
+import { NgxsModule } from '@ngxs/store';
+import { UnitsState } from './сatalogs/units/state';
+import { importProvidersFrom } from '@angular/core';
 
 export const appRoutes: Route[] = [
   {
     path: '',
     component: LayoutComponent,
+    providers: [importProvidersFrom(NgxsModule.forFeature([UnitsState]))],
     children: [
-      provideRoutePage({
-        path: 'ingredients',
-        loadComponent: () =>
-          import(
-            './nomenclature/Ingredients/nomenclature-Ingredients.component'
-          ).then((c) => c.NomenclatureIngredientsComponent),
-      }),
-      provideRoutePage({
+      {
         path: 'units',
-        loadComponent: async () =>
-          (await import('./сatalogs/units/units.component')).UnitsComponent,
-      }),
+        loadChildren: () =>
+          import('./сatalogs/units/units.routes').then((r) => r.ROUTES),
+      },
     ],
   },
 ];

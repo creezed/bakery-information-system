@@ -1,0 +1,33 @@
+<tui-loader [showLoader]="!!(isLoading$ | async)" [overlay]="true">
+  <ui-page-details [formGroup]="form">
+    <ng-template uiPageDetailTab>
+      <app-units-details-main />
+    </ng-template>
+
+    <ng-template uiPageDetailActions>
+      <ng-container *ngIf="detail.data">
+        <button
+          *tuiLet="deleteCommand.command as command"
+          tuiIconButton
+          type="button"
+          [icon]="command.icon"
+          appearance="flat"
+          size="s"
+          shape="rounded"
+          (click)="command.execute(detail.data)"
+        ></button>
+      </ng-container>
+
+      <!--      <button-->
+      <!--        *tuiLet="updateCommand.command as command"-->
+      <!--        tuiIconButton-->
+      <!--        type="button"-->
+      <!--        [icon]="command.icon"-->
+      <!--        appearance="flat"-->
+      <!--        size="s"-->
+      <!--        shape="rounded"-->
+      <!--        (click)="command.execute({ id: '', model: detail.data })"-->
+      <!--      ></button>-->
+    </ng-template>
+  </ui-page-details>
+</tui-loader>

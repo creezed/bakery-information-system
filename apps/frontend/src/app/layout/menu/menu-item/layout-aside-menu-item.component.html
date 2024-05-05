@@ -11,24 +11,21 @@
 ></ng-container>
 
 <ng-template #link let-menuItem>
-  <a
-    [iconLeft]="menuItem.iconLeft"
-    [iconRight]="menuItem.iconRight"
-    [routerLink]="menuItem.routerLink"
-    routerLinkActive="active"
-    tuiAppearance="flat"
-    tuiButton
-  >
+  <tui-svg
+    [src]="menuItem.iconLeft"
+    class="icons8-icon icons8-violet"
+  ></tui-svg>
+  <a routerLinkActive="active" tuiAppearance="flat" tuiButton>
     {{ menuItem.label }}
   </a>
 </ng-template>
 
 <ng-template #button let-menuItem>
-  <button
-    [iconLeft]="menuItem.iconLeft"
-    [iconRight]="menuItem.iconRight"
-    tuiButton
-  >
+  <tui-svg
+    [src]="menuItem.iconLeft"
+    class="icons8-icon icons8-violet"
+  ></tui-svg>
+  <button tuiButton>
     {{ menuItem.label }}
   </button>
 </ng-template>
@@ -40,12 +37,11 @@
     [sided]="true"
     [(open)]="open"
   >
-    <button
-      [iconLeft]="menuItem.iconLeft"
-      [iconRight]="menuItem.iconRight"
-      tuiButton
-      (click)="submenu = !submenu"
-    >
+    <tui-svg
+      [src]="menuItem.iconLeft"
+      class="icons8-icon icons8-violet"
+    ></tui-svg>
+    <button tuiButton (click)="submenu = !submenu">
       {{ menuItem.label }}
     </button>
     <ng-template #dropdown>

@@ -1,0 +1,35 @@
+<div class="flex flex-col items-center gap-2">
+  <h5 *ngIf="context.data?.label as label" class="tui-text_h5">{{ label }}</h5>
+
+  <p
+    *ngIf="context.data?.description as description"
+    class="tui-text_body-l max-w-sm"
+  >
+    {{ description }}
+  </p>
+</div>
+
+<div class="flex items-center gap-1 w-full">
+  <button
+    size="m"
+    tuiButton
+    type="button"
+    class="grow"
+    appearance="secondary"
+    (click)="context.completeWith(false)"
+  >
+    {{ context.data?.no || 'Нет' }}
+  </button>
+  <button
+    size="m"
+    tuiAutoFocus
+    tuiButton
+    type="button"
+    class="grow"
+    [appearance]="context.data?.appearance || 'primary'"
+    [showLoader]="!!(yesLoading$ | async)"
+    (click)="click()"
+  >
+    {{ context.data?.yes || 'Да' }}
+  </button>
+</div>

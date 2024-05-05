@@ -33,12 +33,21 @@
       appearance="flat"
       size="m"
       tuiButton
+      (click)="close()"
       type="button"
       class="tui-form__button"
     >
       Отменить
     </button>
-    <button size="m" tuiButton type="submit" class="tui-form__button">
+    <button
+      [disabled]="!formValid"
+      (click)="submit()"
+      [loading]="isLoading$ | async"
+      size="m"
+      tuiButton
+      type="submit"
+      class="tui-form__button"
+    >
       Создать
     </button>
   </div>

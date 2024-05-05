@@ -12,7 +12,7 @@ import {
 import { TuiLetModule, tuiPure } from '@taiga-ui/cdk';
 import { ColumnModel } from './interfaces/column.model';
 import { TableQueryService } from './services';
-import { TuiLoaderModule } from '@taiga-ui/core';
+import { TuiLoaderModule, TuiScrollbarModule } from '@taiga-ui/core';
 import {
   PolymorpheusModule,
   PolymorpheusTemplate,
@@ -28,6 +28,7 @@ import {
     TuiLoaderModule,
     TuiTablePaginationModule,
     PolymorpheusModule,
+    TuiScrollbarModule,
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
