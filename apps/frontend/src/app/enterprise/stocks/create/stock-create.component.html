@@ -1,0 +1,62 @@
+<h3 class="tui-form__header tui-form__header_margin-top_none">
+  Создание склада
+</h3>
+<form
+  [formGroup]="form"
+  tuiTextfieldSize="l"
+  [tuiTextfieldCleaner]="true"
+  [tuiTextfieldLabelOutside]="true"
+>
+  <div class="tui-form__row">
+    <tui-input formControlName="code">
+      Код
+      <input tuiTextfield type="text" />
+    </tui-input>
+    <tui-error formControlName="code" [error]="[] | tuiFieldError | async" />
+  </div>
+  <div class="tui-form__row">
+    <tui-input formControlName="name">
+      Наименование
+      <input tuiTextfield type="text" />
+    </tui-input>
+    <tui-error formControlName="name" [error]="[] | tuiFieldError | async" />
+  </div>
+  <div class="tui-form__row">
+    <tui-textarea
+      formControlName="description"
+      class="field-medium"
+      [expandable]="true"
+      [maxLength]="400"
+    >
+      Описание
+    </tui-textarea>
+    <tui-error
+      formControlName="description"
+      [error]="[] | tuiFieldError | async"
+    />
+  </div>
+
+  <div class="tui-form__buttons justify-end">
+    <button
+      appearance="flat"
+      size="m"
+      tuiButton
+      (click)="close()"
+      type="button"
+      class="tui-form__button"
+    >
+      Отменить
+    </button>
+    <button
+      [disabled]="!formValid"
+      (click)="submit()"
+      [loading]="isLoading$ | async"
+      size="m"
+      tuiButton
+      type="submit"
+      class="tui-form__button"
+    >
+      Создать
+    </button>
+  </div>
+</form>

@@ -25,7 +25,7 @@ export class UnitsService {
   async findMany(query: PaginateQuery): Promise<Paginated<Unit>> {
     return paginate<Unit>({
       query,
-      model: this.prismaService.unit,
+      model: this.prismaService.client.unit,
       config: {
         sortableColumns: ['fullName', 'name', 'code'],
       },
@@ -39,10 +39,8 @@ export class UnitsService {
       throw new ConflictException(`Не найти единицу измерения с id ${unitId}`);
     }
 
-    return this.prismaService.unit.delete({
-      where: {
-        id: unitId,
-      },
+    return this.prismaService.client.unit.delete({
+      id: unitId,
     });
   }
 

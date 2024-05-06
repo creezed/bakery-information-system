@@ -8,10 +8,12 @@ import { CommonModule } from '@angular/common';
 import {
   ColumnModel,
   DeleteCommand,
+  EmptyGuardComponent,
   PageActionsDirective,
   PageComponent,
   PageTabDirective,
   provideDeleteCommand,
+  provideEmptyGuardOptions,
   provideTableQuery,
   provideToCreateCommand,
   provideToEditCommand,
@@ -30,6 +32,10 @@ import { RemoveUnit, UpdateUnit } from './state';
 import { UnitsCreateModalComponent } from './create-modal/units-create-modal.component';
 import { UnitsDetailsComponent } from './details/units-details.component';
 import { TuiSelectModule } from '@taiga-ui/kit';
+import { Store } from '@ngxs/store';
+import { UnitsStateSelectors } from './state/units-state.selectors';
+import { map } from 'rxjs';
+import { UnitsEmptyGuard } from './consts';
 
 @Component({
   selector: 'app-units',
@@ -45,6 +51,7 @@ import { TuiSelectModule } from '@taiga-ui/kit';
     PolymorpheusModule,
     RouterOutlet,
     TuiSelectModule,
+    EmptyGuardComponent,
   ],
   templateUrl: './units.component.html',
   styleUrl: './units.component.scss',
@@ -62,14 +69,21 @@ import { TuiSelectModule } from '@taiga-ui/kit';
     provideToEditCommand({
       component: UnitsDetailsComponent,
     }),
+    provideEmptyGuardOptions(UnitsEmptyGuard),
   ],
 })
 export class UnitsComponent {
+  private readonly _store = inject(Store);
+
   protected readonly toCreate = inject(ToCreateCommand);
 
   protected readonly deleteCommand = inject(DeleteCommand);
 
   protected readonly toEditCommand = inject<ToEditCommand<Unit>>(ToEditCommand);
+
+  protected readonly units$ = this._store
+    .select(UnitsStateSelectors.units)
+    .pipe(map((units) => units.items));
 
   protected readonly columns: ColumnModel<Unit>[] = [
     {
@@ -87,6 +101,8 @@ export class UnitsComponent {
   ];
 
   protected trackByRow: TrackByFunction<Unit> = (_index, unit) => unit.id;
+
+  protected emptyUnitsHandler = () => this.toCreate.execute();
 
   protected readonly rowContext!: TuiContextWithImplicit<Unit>;
 }

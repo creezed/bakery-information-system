@@ -39,17 +39,12 @@ export class LayoutService {
       ],
     },
     {
-      label: 'Склад',
+      label: 'Предприятие',
       iconLeft: 'tuiIconBox',
       children: [
         {
-          label: 'Поставки',
-        },
-        {
-          label: 'Поставщики',
-        },
-        {
-          label: 'Остатки сырья',
+          label: 'Склады',
+          routerLink: 'stocks',
         },
       ],
     },
