@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { UnitsService } from './services/units.service';
+import { StocksService } from './services/stocks.service';
 
 /**
  * Module that provides all services and configuration.
@@ -15,6 +16,7 @@ import { UnitsService } from './services/units.service';
   declarations: [],
   providers: [
     UnitsService,
+    StocksService,
     ApiConfiguration
   ],
 })

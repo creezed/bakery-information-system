@@ -1,0 +1,23 @@
+<ng-container [ngSwitch]="isEmpty">
+  <ng-container *ngSwitchCase="false">
+    <ng-content />
+  </ng-container>
+
+  <ng-container *ngSwitchCase="true">
+    <tui-block-status>
+      <ng-lottie
+        *ngIf="options.lottieSrc"
+        width="30rem"
+        height="30rem"
+        tuiSlot="top"
+        class="flex justify-center items-center"
+        [options]="lottieOptions"
+      />
+      <h4>{{ options.title }}</h4>
+      <p class="max-w-xl">{{ options.paragraph }}</p>
+      <button tuiButton appearance="primary" (click)="click()">
+        {{ options.buttonText }}
+      </button>
+    </tui-block-status>
+  </ng-container>
+</ng-container>

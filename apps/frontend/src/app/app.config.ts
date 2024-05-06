@@ -9,6 +9,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { provideLottieOptions } from 'ngx-lottie';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,6 +19,9 @@ export const appConfig: ApplicationConfig = {
     },
     provideAnimations(),
     provideRouter(appRoutes),
+    provideLottieOptions({
+      player: () => import('lottie-web'),
+    }),
     provideHttpClient(),
     importProvidersFrom(
       TuiRootModule,

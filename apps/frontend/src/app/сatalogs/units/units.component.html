@@ -1,6 +1,13 @@
-<ui-page header="Единицы измерения">
+<ui-page header="Единицы измерения" *ngIf="units$ | async as units">
   <ng-template uiPageTab="Таблица">
-    <ui-table [columns]="columns" [actions]="actions" [trackBy]="trackByRow" />
+    <ui-page-empty-guard [data]="units" [buttonClick]="emptyUnitsHandler">
+      <ui-table
+        [columns]="columns"
+        [actions]="actions"
+        [trackBy]="trackByRow"
+      />
+    </ui-page-empty-guard>
+
     <ng-template let-row #actions="polymorpheus" [polymorpheus]="rowContext">
       <button
         tuiIconButton

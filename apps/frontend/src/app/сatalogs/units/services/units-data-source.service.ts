@@ -5,18 +5,17 @@ import {
   JsonPatchModel,
   PaginatedQueryModel,
 } from '@bakery-information-system/web/shared';
-import { delay } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UnitsDataSourceService {
   private readonly _api = inject(UnitsService);
 
   public getAll(paginated?: PaginatedQueryModel) {
-    return this._api.unitsControllerGetAll(paginated).pipe(delay(1000));
+    return this._api.unitsControllerGetAll(paginated);
   }
 
   public getOne(id: string) {
-    return this._api.unitsControllerGetOne({ id }).pipe(delay(1000));
+    return this._api.unitsControllerGetOne({ id });
   }
 
   public create(params: CreateUnitModel) {

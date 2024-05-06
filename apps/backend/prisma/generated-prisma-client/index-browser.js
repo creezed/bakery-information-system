@@ -129,6 +129,16 @@ exports.Prisma.UnitScalarFieldEnum = {
   fullName: 'fullName'
 };
 
+exports.Prisma.StockScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  name: 'name',
+  code: 'code',
+  description: 'description'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -146,7 +156,8 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  Unit: 'Unit'
+  Unit: 'Unit',
+  Stock: 'Stock'
 };
 
 /**
