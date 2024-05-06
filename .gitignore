@@ -41,6 +41,4 @@ Thumbs.db
 .nx/cache
 .angular
 
-**/prisma/generated-prisma-client
-**/prisma/migrations/dev/
 .nx

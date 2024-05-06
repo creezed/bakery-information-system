@@ -27,7 +27,7 @@ import { TuiContextWithImplicit, TuiLetModule } from '@taiga-ui/cdk';
 import { Stock } from './models';
 import { PolymorpheusModule } from '@tinkoff/ng-polymorpheus';
 import { TuiButtonModule } from '@taiga-ui/core';
-import { StockTableQueryDataProvider } from './table-data-provider/stocks-table-data-provider';
+import { StockTableQueryDataProvider } from './table-data-provider';
 import { RemoveStock, UpdateStock } from './state';
 import { StockCreateComponent } from './create/stock-create.component';
 import { StockEditComponent } from './edit/stock-edit.component';
@@ -35,6 +35,7 @@ import { LottieComponent } from 'ngx-lottie';
 import { Store } from '@ngxs/store';
 import { StocksStateSelectors } from './state/stocks-state.selectors';
 import { map } from 'rxjs';
+import { StockEmptyGuard } from './consts';
 
 @Component({
   selector: 'app-stocks',
@@ -66,13 +67,7 @@ import { map } from 'rxjs';
       component: StockEditComponent,
       strategy: ToEditCommandStrategies.Modal,
     }),
-    provideEmptyGuardOptions({
-      title: 'Создайте свой первый склад',
-      paragraph: `В системе пока не создано ни одного склада. Начните с создания нового
-          склада, чтобы начать управлять вашими запасами и логистикой более
-          эффективно.`,
-      buttonText: 'Создать склад',
-    }),
+    provideEmptyGuardOptions(StockEmptyGuard),
   ],
 })
 export class StocksComponent {

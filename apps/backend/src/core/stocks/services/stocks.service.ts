@@ -25,7 +25,7 @@ export class StocksService {
   async findMany(query: PaginateQuery): Promise<Paginated<Stock>> {
     return paginate<Stock>({
       query,
-      model: this.prismaService.stock,
+      model: this.prismaService.client.stock,
       config: {
         sortableColumns: ['code'],
       },
@@ -39,11 +39,7 @@ export class StocksService {
       throw new ConflictException(`Не найти склад с id ${stockId}`);
     }
 
-    return this.prismaService.stock.delete({
-      where: {
-        id: stockId,
-      },
-    });
+    return this.prismaService.client.stock.delete({ id: stockId });
   }
 
   async patch(stockId: string, dto: JsonPatchDto): Promise<Stock> {

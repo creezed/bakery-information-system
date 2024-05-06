@@ -35,6 +35,7 @@ import { TuiSelectModule } from '@taiga-ui/kit';
 import { Store } from '@ngxs/store';
 import { UnitsStateSelectors } from './state/units-state.selectors';
 import { map } from 'rxjs';
+import { UnitsEmptyGuard } from './consts';
 
 @Component({
   selector: 'app-units',
@@ -68,12 +69,7 @@ import { map } from 'rxjs';
     provideToEditCommand({
       component: UnitsDetailsComponent,
     }),
-    provideEmptyGuardOptions({
-      title: 'Создайте свою первую единицу измерения',
-      paragraph:
-        'В системе пока не создана ни одна единица измерения. Начните с создания новой единицы измерения, чтобы оптимизировать процессы учета и анализа данных.',
-      buttonText: 'Создать единицу измерения',
-    }),
+    provideEmptyGuardOptions(UnitsEmptyGuard),
   ],
 })
 export class UnitsComponent {
