@@ -28,4 +28,4 @@ export function unitsControllerGetOne(http: HttpClient, rootUrl: string, params:
   );
 }
 
-unitsControllerGetOne.PATH = '/api/units/{id}';
+unitsControllerGetOne.PATH = '/api/unit/{id}';

@@ -33,4 +33,4 @@ export function unitsControllerCreate(http: HttpClient, rootUrl: string, params:
   );
 }
 
-unitsControllerCreate.PATH = '/api/units';
+unitsControllerCreate.PATH = '/api/unit';

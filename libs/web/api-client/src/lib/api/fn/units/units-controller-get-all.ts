@@ -12,7 +12,8 @@ import { Unit } from '../../models/unit';
 export interface UnitsControllerGetAll$Params {
   page?: number;
   limit?: number;
-  sortBy?: Array<any>;
+  sortBy?: string;
+  search?: string;
 }
 
 export function unitsControllerGetAll(http: HttpClient, rootUrl: string, params?: UnitsControllerGetAll$Params, context?: HttpContext): Observable<StrictHttpResponse<PaginatedDocumented & {
@@ -23,6 +24,7 @@ export function unitsControllerGetAll(http: HttpClient, rootUrl: string, params?
     rb.query('page', params.page, {});
     rb.query('limit', params.limit, {});
     rb.query('sortBy', params.sortBy, {});
+    rb.query('search', params.search, {});
   }
 
   return http.request(
@@ -37,4 +39,4 @@ export function unitsControllerGetAll(http: HttpClient, rootUrl: string, params?
   );
 }
 
-unitsControllerGetAll.PATH = '/api/units';
+unitsControllerGetAll.PATH = '/api/unit';

@@ -33,4 +33,4 @@ export function stocksControllerCreate(http: HttpClient, rootUrl: string, params
   );
 }
 
-stocksControllerCreate.PATH = '/api/stocks';
+stocksControllerCreate.PATH = '/api/stock';

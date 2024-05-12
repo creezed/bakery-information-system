@@ -1,0 +1,60 @@
+<h3 class="tui-form__header tui-form__header_margin-top_none">
+  Создание Ингредиента
+</h3>
+<form [formGroup]="form" tuiTextfieldSize="l" [tuiTextfieldCleaner]="true">
+  <ui-input
+    class="tui-form__row"
+    formControlName="article"
+    [maskito]="englishAlphanumericMask"
+    [statusIconShow]="true"
+  >
+    Артикул
+  </ui-input>
+
+  <ui-input class="tui-form__row" formControlName="name">
+    Наименование
+  </ui-input>
+
+  <ui-combobox
+    class="tui-form__row"
+    [itemContent]="value"
+    [valueContent]="value"
+    [stringify]="formService.unitsComboboxStringify"
+    formControlName="unit"
+    [uiInfinityScrollDataProvider]="formService.unitsComboboxDataProvider"
+  >
+    Единица измерения
+  </ui-combobox>
+
+  <ui-input-number class="tui-form__row" formControlName="weightKg">
+    Вес базовой единицы, кг
+  </ui-input-number>
+
+  <div class="tui-form__buttons justify-end">
+    <button
+      appearance="flat"
+      size="m"
+      tuiButton
+      (click)="close()"
+      type="button"
+      class="tui-form__button"
+    >
+      Отменить
+    </button>
+    <button
+      [disabled]="!form.valid"
+      [loading]="isLoading$ | async"
+      (click)="submit()"
+      size="m"
+      tuiButton
+      type="submit"
+      class="tui-form__button"
+    >
+      Создать
+    </button>
+  </div>
+</form>
+
+<ng-template #value let-unit>
+  {{ unit.fullName }}
+</ng-template>

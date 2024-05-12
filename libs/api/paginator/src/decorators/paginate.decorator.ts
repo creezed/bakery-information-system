@@ -5,6 +5,7 @@ import { isString } from 'lodash';
 export interface PaginateQuery {
   page?: number;
   limit?: number;
+  search?: [string, string][];
   sortBy?: [string, 'asc' | 'desc'][];
 }
 
@@ -42,12 +43,15 @@ export const Paginate = createParamDecorator(
       multipleSplit
     ) as [string, 'asc' | 'desc'][] | undefined;
 
+    const search = parseParam<[string, string]>(query['search'], multipleSplit);
+
     return {
       page: query['page'] ? parseInt(query['page'].toString(), 10) : undefined,
       limit: query['limit']
         ? parseInt(query['limit'].toString(), 10)
         : undefined,
       sortBy,
+      search,
     };
   }
 );

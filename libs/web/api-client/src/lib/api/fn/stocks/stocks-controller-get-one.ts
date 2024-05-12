@@ -28,4 +28,4 @@ export function stocksControllerGetOne(http: HttpClient, rootUrl: string, params
   );
 }
 
-stocksControllerGetOne.PATH = '/api/stocks/{id}';
+stocksControllerGetOne.PATH = '/api/stock/{id}';

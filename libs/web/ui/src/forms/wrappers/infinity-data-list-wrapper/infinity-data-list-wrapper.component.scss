@@ -1,0 +1,24 @@
+@use '@taiga-ui/core/styles/taiga-ui-local';
+
+:host {
+  display: block;
+}
+
+.t-content {
+  flex: 1;
+}
+
+.t-loader {
+  margin: 0.75rem 0;
+}
+
+.t-scroll {
+  @include taiga-ui-local.scrollbar-hidden();
+
+  min-height: 64px;
+  max-height: 100%;
+}
+
+.viewport {
+  height: 20rem;
+}

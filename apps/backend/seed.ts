@@ -30,6 +30,11 @@ async function main() {
       fullName: 'Килограмм',
     },
     {
+      code: '163',
+      name: 'г',
+      fullName: 'Грамм',
+    },
+    {
       code: '112',
       name: 'л',
       fullName: 'Литр',

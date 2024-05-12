@@ -31,4 +31,4 @@ export function unitsControllerPatch(http: HttpClient, rootUrl: string, params: 
   );
 }
 
-unitsControllerPatch.PATH = '/api/units/{id}';
+unitsControllerPatch.PATH = '/api/unit/{id}';

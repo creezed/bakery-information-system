@@ -1,22 +1,48 @@
-<table tuiTable class="tui-table" [columns]="columns">
-  <thead>
-    <tr tuiThGroup class="tui-table__tr tui-table__tr_border_none">
-      <th class="tui-table__th" tuiTh [resizable]="true">Наименование</th>
-      <th class="tui-table__th" tuiTh>Артикул</th>
-    </tr>
-  </thead>
-  <tbody tuiTbody [data]="mock">
-    <tr
-      class="tui-table__tr tui-table__tr_border_none"
-      *ngFor="let item of mock"
-      tuiTr
+<ui-page header="Ингредиенты" *ngIf="ingredients$ | async as ingredients">
+  <ng-template uiPageTab="Таблица">
+    <ui-page-empty-guard
+      [data]="ingredients"
+      [isLoading]="!!(ingredientsLoading$ | async)"
+      [buttonClick]="emptyStockHandler"
     >
-      <td class="tui-table__td" *tuiCell="'name'" tuiTd>
-        {{ item.name }}
-      </td>
-      <td class="tui-table__td" *tuiCell="'vendorCode'" tuiTd>
-        {{ item.vendorCode }}
-      </td>
-    </tr>
-  </tbody>
-</table>
+      <ui-table
+        [columns]="columns"
+        [actions]="actions"
+        [trackBy]="trackByRow"
+      />
+    </ui-page-empty-guard>
+
+    <ng-template let-row #actions="polymorpheus" [polymorpheus]="rowContext">
+      <button
+        tuiIconButton
+        type="button"
+        [icon]="toEditCommand.appearance.icon"
+        appearance="flat"
+        size="s"
+        shape="rounded"
+        (click)="toEditCommand.execute(row)"
+      ></button>
+      <button
+        tuiIconButton
+        type="button"
+        [icon]="deleteCommand.appearance.icon"
+        appearance="flat"
+        size="s"
+        shape="rounded"
+        (click)="deleteCommand.execute(row)"
+      ></button>
+    </ng-template>
+  </ng-template>
+
+  <ng-template uiPageActions>
+    <button
+      tuiIconButton
+      type="button"
+      [icon]="toCreate.appearance.icon"
+      appearance="flat"
+      size="s"
+      shape="rounded"
+      (click)="toCreate.execute()"
+    ></button>
+  </ng-template>
+</ui-page>

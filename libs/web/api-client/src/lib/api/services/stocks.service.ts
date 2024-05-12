@@ -29,7 +29,7 @@ export class StocksService extends BaseService {
   }
 
   /** Path part for operation `stocksControllerGetAll()` */
-  static readonly StocksControllerGetAllPath = '/api/stocks';
+  static readonly StocksControllerGetAllPath = '/api/stock';
 
   /**
    * get all stocks.
@@ -70,7 +70,7 @@ export class StocksService extends BaseService {
   }
 
   /** Path part for operation `stocksControllerCreate()` */
-  static readonly StocksControllerCreatePath = '/api/stocks';
+  static readonly StocksControllerCreatePath = '/api/stock';
 
   /**
    * create a new stock.
@@ -103,7 +103,7 @@ export class StocksService extends BaseService {
   }
 
   /** Path part for operation `stocksControllerGetOne()` */
-  static readonly StocksControllerGetOnePath = '/api/stocks/{id}';
+  static readonly StocksControllerGetOnePath = '/api/stock/{id}';
 
   /**
    * get one stock.
@@ -136,7 +136,7 @@ export class StocksService extends BaseService {
   }
 
   /** Path part for operation `stocksControllerDelete()` */
-  static readonly StocksControllerDeletePath = '/api/stocks/{id}';
+  static readonly StocksControllerDeletePath = '/api/stock/{id}';
 
   /**
    * delete stock.
@@ -169,7 +169,7 @@ export class StocksService extends BaseService {
   }
 
   /** Path part for operation `stocksControllerPatch()` */
-  static readonly StocksControllerPatchPath = '/api/stocks/{id}';
+  static readonly StocksControllerPatchPath = '/api/stock/{id}';
 
   /**
    * update stock.

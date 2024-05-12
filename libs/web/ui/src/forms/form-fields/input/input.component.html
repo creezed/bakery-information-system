@@ -1,0 +1,16 @@
+<tui-input
+  [formControl]="control"
+  [tuiTextfieldCustomContent]="statusIconShow && (statusIcon$ | async)"
+>
+  <ng-content />
+  <input tuiTextfield type="text" />
+</tui-input>
+<tui-error [formControl]="control" [error]="[] | tuiFieldError | async" />
+
+<ng-template #pending>
+  <tui-loader />
+</ng-template>
+
+<ng-template #valid>
+  <tui-svg src="tuiIconCheckCircle" class="text-green-600" />
+</ng-template>

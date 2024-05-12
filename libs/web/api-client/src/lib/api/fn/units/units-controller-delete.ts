@@ -28,4 +28,4 @@ export function unitsControllerDelete(http: HttpClient, rootUrl: string, params:
   );
 }
 
-unitsControllerDelete.PATH = '/api/units/{id}';
+unitsControllerDelete.PATH = '/api/unit/{id}';

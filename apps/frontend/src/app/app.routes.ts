@@ -19,6 +19,13 @@ export const appRoutes: Route[] = [
         loadChildren: () =>
           import('./enterprise/stocks/stocks.routes').then((r) => r.ROUTES),
       },
+      {
+        path: 'ingredients',
+        loadChildren: () =>
+          import('./nomenclature/Ingredients/ingredients.routes').then(
+            (r) => r.ROUTES
+          ),
+      },
     ],
   },
 ];

@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Prisma, PrismaService } from '../../../prisma';
 import { Unit } from '../../../models/unit.model';
 import { CreateUnitDto } from '../dtos/create-unit.dto';
@@ -19,7 +15,13 @@ export class UnitsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findOne(args: Prisma.UnitFindUniqueArgs): Promise<Unit> {
-    return this.prismaService.unit.findUnique(args);
+    const unit = await this.prismaService.client.unit.findUnique(args);
+
+    if (!unit) {
+      throw new BadRequestException('Единица измерения не найдена');
+    }
+
+    return unit;
   }
 
   async findMany(query: PaginateQuery): Promise<Paginated<Unit>> {
@@ -35,21 +37,16 @@ export class UnitsService {
   async delete(unitId: string): Promise<Unit> {
     const unit = await this.findOne({ where: { id: unitId } });
 
-    if (!unit) {
-      throw new ConflictException(`Не найти единицу измерения с id ${unitId}`);
-    }
-
     return this.prismaService.client.unit.delete({
-      id: unitId,
+      id: unit.id,
     });
   }
 
   async patch(unitId: string, dto: JsonPatchDto): Promise<Unit> {
     const unit = await this.findOne({ where: { id: unitId } });
-    if (!unit) {
-      throw new BadRequestException('Ед. из. не найдена');
-    }
+
     const updatedUnit = dto.patch.reduce(applyReducer, unit);
+
     return this.prismaService.unit.update({
       where: { id: unit.id },
       data: updatedUnit,

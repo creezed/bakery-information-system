@@ -1,0 +1,42 @@
+<cdk-virtual-scroll-viewport
+  *ngIf="items; else loading"
+  tuiScrollable
+  class="t-scroll"
+  [itemSize]="48"
+  [style.height.px]="items.length * 48 + 8"
+  (uiIndexChange)="list.handleFocusLossIfNecessary()"
+>
+  <tui-data-list #list [emptyContent]="emptyContent" [size]="$any(size)">
+    <button
+      *cdkVirtualFor="let item of items; last as isLast"
+      #elementRef="elementRef"
+      tuiElement
+      tuiOption
+      [disabled]="disabledItemHandler(item)"
+      [value]="item"
+      (click)="itemClick.emit(item)"
+    >
+      <span class="t-content">
+        <ng-container
+          *polymorpheusOutlet="
+            itemContent as text;
+            context: getContext(item, elementRef)
+          "
+        >
+          {{ text }}
+        </ng-container>
+      </span>
+      <ng-container *ngIf="isLast">
+        @defer (on viewport) {
+        <ui-load-trigger (init)="scrolled.next()" />
+        } @placeholder {
+        <span></span>
+        }
+      </ng-container>
+    </button>
+  </tui-data-list>
+</cdk-virtual-scroll-viewport>
+
+<ng-template #loading>
+  <tui-loader class="t-loader" />
+</ng-template>

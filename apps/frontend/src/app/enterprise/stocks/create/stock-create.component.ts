@@ -85,16 +85,12 @@ export class StockCreateComponent {
       return;
     }
 
-    const { code, description, name } = this.form.value;
-
-    if (code && name) {
-      this._store
-        .dispatch(new CreateStock({ model: { code, description, name } }))
-        .pipe(takeUntil(this._destroy$))
-        .subscribe(() => {
-          this._context.completeWith(true);
-        });
-    }
+    this._store
+      .dispatch(new CreateStock({ model: this.form.getRawValue() }))
+      .pipe(takeUntil(this._destroy$))
+      .subscribe(() => {
+        this._context.completeWith(true);
+      });
   }
 
   protected close(): void {

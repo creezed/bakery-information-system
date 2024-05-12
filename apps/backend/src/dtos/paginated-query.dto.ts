@@ -8,5 +8,8 @@ export class PaginatedQueryDto {
   limit?: number;
 
   @ApiProperty({ required: false })
-  sortBy?: [string, 'asc' | 'desc'][];
+  sortBy?: string;
+
+  @ApiProperty({ required: false })
+  search?: string;
 }
