@@ -12,7 +12,8 @@ import { Stock } from '../../models/stock';
 export interface StocksControllerGetAll$Params {
   page?: number;
   limit?: number;
-  sortBy?: Array<any>;
+  sortBy?: string;
+  search?: string;
 }
 
 export function stocksControllerGetAll(http: HttpClient, rootUrl: string, params?: StocksControllerGetAll$Params, context?: HttpContext): Observable<StrictHttpResponse<PaginatedDocumented & {
@@ -23,6 +24,7 @@ export function stocksControllerGetAll(http: HttpClient, rootUrl: string, params
     rb.query('page', params.page, {});
     rb.query('limit', params.limit, {});
     rb.query('sortBy', params.sortBy, {});
+    rb.query('search', params.search, {});
   }
 
   return http.request(
@@ -37,4 +39,4 @@ export function stocksControllerGetAll(http: HttpClient, rootUrl: string, params
   );
 }
 
-stocksControllerGetAll.PATH = '/api/stocks';
+stocksControllerGetAll.PATH = '/api/stock';

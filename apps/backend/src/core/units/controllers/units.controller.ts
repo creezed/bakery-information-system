@@ -27,7 +27,7 @@ import {
 import { JsonPatchDto, PaginatedQueryDto } from '../../../dtos';
 
 @ApiTags('Units')
-@Controller('units')
+@Controller('unit')
 export class UnitsController {
   constructor(private readonly unitsService: UnitsService) {}
 

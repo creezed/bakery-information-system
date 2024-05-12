@@ -1,0 +1,70 @@
+<tui-loader
+  *tuiLet="{
+    selectedIngredient: selectedIngredient$ | async,
+    isLoading: !!(selectedIngredientLoading$ | async)
+  } as data"
+  [showLoader]="data.isLoading"
+  size="xl"
+  [overlay]="true"
+>
+  <h3 class="tui-form__header tui-form__header_margin-top_none">
+    Редактирование Ингредиента {{ data.selectedIngredient?.name }}
+  </h3>
+  <form [formGroup]="form" tuiTextfieldSize="l" [tuiTextfieldCleaner]="true">
+    <ui-input
+      class="tui-form__row"
+      formControlName="article"
+      [statusIconShow]="true"
+      [maskito]="englishAlphanumericMask"
+    >
+      Артикул
+    </ui-input>
+
+    <ui-input class="tui-form__row" formControlName="name">
+      Наименование
+    </ui-input>
+
+    <ui-combobox
+      class="tui-form__row"
+      [itemContent]="value"
+      [valueContent]="value"
+      [stringify]="formService.unitsComboboxStringify"
+      formControlName="unit"
+      [uiInfinityScrollDataProvider]="formService.unitsComboboxDataProvider"
+    >
+      Единица измерения
+    </ui-combobox>
+
+    <ui-input-number class="tui-form__row" formControlName="weightKg">
+      Вес базовой единицы, кг
+    </ui-input-number>
+
+    <div class="tui-form__buttons justify-end">
+      <button
+        appearance="flat"
+        size="m"
+        tuiButton
+        (click)="close()"
+        type="button"
+        class="tui-form__button"
+      >
+        Отменить
+      </button>
+      <button
+        [disabled]="!form.valid"
+        [loading]="isLoading$ | async"
+        (click)="submit()"
+        size="m"
+        tuiButton
+        type="button"
+        class="tui-form__button"
+      >
+        Сохранить
+      </button>
+    </div>
+  </form>
+</tui-loader>
+
+<ng-template #value let-unit>
+  {{ unit.fullName }}
+</ng-template>

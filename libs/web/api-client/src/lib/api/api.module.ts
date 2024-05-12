@@ -6,6 +6,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { UnitsService } from './services/units.service';
 import { StocksService } from './services/stocks.service';
+import { IngredientsService } from './services/ingredients.service';
 
 /**
  * Module that provides all services and configuration.
@@ -17,6 +18,7 @@ import { StocksService } from './services/stocks.service';
   providers: [
     UnitsService,
     StocksService,
+    IngredientsService,
     ApiConfiguration
   ],
 })

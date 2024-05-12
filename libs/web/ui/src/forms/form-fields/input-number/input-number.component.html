@@ -1,0 +1,10 @@
+<tui-input-number
+  decimal="always"
+  [max]="1"
+  [formControl]="control"
+  [precision]="3"
+>
+  <ng-content />
+</tui-input-number>
+
+<tui-error [formControl]="control" [error]="[] | tuiFieldError | async" />

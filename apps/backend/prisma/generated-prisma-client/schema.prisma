@@ -2,7 +2,7 @@ generator serverClient {
   provider        = "prisma-client-js"
   output          = "../../../../apps/backend/prisma/generated-prisma-client"
   binaryTargets   = ["native", "debian-openssl-1.1.x", "linux-arm64-openssl-1.1.x"]
-  previewFeatures = ["tracing"]
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -11,13 +11,14 @@ datasource db {
 }
 
 model Unit {
-  id        String    @id @default(cuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  code      String
-  name      String
-  fullName  String
+  id         String       @id @default(cuid())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  deletedAt  DateTime?
+  ingredient Ingredient[]
+  code       String
+  name       String
+  fullName   String
 }
 
 model Stock {
@@ -28,4 +29,18 @@ model Stock {
   name        String
   code        String
   description String?
+}
+
+model Ingredient {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  name      String
+  article   String
+  unit      Unit      @relation(fields: [unitId], references: [id])
+  unitId    String
+  weightKg  Decimal   @db.Decimal(3, 1)
+
+  @@unique([article])
 }

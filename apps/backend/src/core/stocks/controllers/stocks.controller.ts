@@ -27,7 +27,7 @@ import { Stock } from '../../../models/stock.model';
 import { CreateStockDto } from '../dtos/create-stock.dto';
 
 @ApiTags('Stocks')
-@Controller('stocks')
+@Controller('stock')
 export class StocksController {
   constructor(public stockService: StocksService) {}
 

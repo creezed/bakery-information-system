@@ -29,7 +29,7 @@ export class UnitsService extends BaseService {
   }
 
   /** Path part for operation `unitsControllerGetAll()` */
-  static readonly UnitsControllerGetAllPath = '/api/units';
+  static readonly UnitsControllerGetAllPath = '/api/unit';
 
   /**
    * get all units.
@@ -70,7 +70,7 @@ export class UnitsService extends BaseService {
   }
 
   /** Path part for operation `unitsControllerCreate()` */
-  static readonly UnitsControllerCreatePath = '/api/units';
+  static readonly UnitsControllerCreatePath = '/api/unit';
 
   /**
    * create a new unit.
@@ -103,7 +103,7 @@ export class UnitsService extends BaseService {
   }
 
   /** Path part for operation `unitsControllerGetOne()` */
-  static readonly UnitsControllerGetOnePath = '/api/units/{id}';
+  static readonly UnitsControllerGetOnePath = '/api/unit/{id}';
 
   /**
    * get one unit.
@@ -136,7 +136,7 @@ export class UnitsService extends BaseService {
   }
 
   /** Path part for operation `unitsControllerDelete()` */
-  static readonly UnitsControllerDeletePath = '/api/units/{id}';
+  static readonly UnitsControllerDeletePath = '/api/unit/{id}';
 
   /**
    * delete unit.
@@ -169,7 +169,7 @@ export class UnitsService extends BaseService {
   }
 
   /** Path part for operation `unitsControllerPatch()` */
-  static readonly UnitsControllerPatchPath = '/api/units/{id}';
+  static readonly UnitsControllerPatchPath = '/api/unit/{id}';
 
   /**
    * update unit.

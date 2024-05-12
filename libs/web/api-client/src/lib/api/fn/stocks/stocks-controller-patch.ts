@@ -31,4 +31,4 @@ export function stocksControllerPatch(http: HttpClient, rootUrl: string, params:
   );
 }
 
-stocksControllerPatch.PATH = '/api/stocks/{id}';
+stocksControllerPatch.PATH = '/api/stock/{id}';

@@ -139,6 +139,17 @@ exports.Prisma.StockScalarFieldEnum = {
   description: 'description'
 };
 
+exports.Prisma.IngredientScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  name: 'name',
+  article: 'article',
+  unitId: 'unitId',
+  weightKg: 'weightKg'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -154,10 +165,32 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.UnitOrderByRelevanceFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  fullName: 'fullName'
+};
+
+exports.Prisma.StockOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  description: 'description'
+};
+
+exports.Prisma.IngredientOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  article: 'article',
+  unitId: 'unitId'
+};
+
 
 exports.Prisma.ModelName = {
   Unit: 'Unit',
-  Stock: 'Stock'
+  Stock: 'Stock',
+  Ingredient: 'Ingredient'
 };
 
 /**

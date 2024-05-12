@@ -33,6 +33,11 @@ interface FindManyArgs {
   readonly take: number;
   readonly skip: number;
   readonly orderBy: Record<string, 'asc' | 'desc'>;
+  readonly where: {
+    [key: string]: {
+      search: string;
+    };
+  };
 }
 
 export async function paginate<T>({
@@ -56,12 +61,15 @@ export async function paginate<T>({
 
   const sortBy: [string, 'asc' | 'desc'][] = [];
 
+  const search: [string, string][] = [];
+
   const skip = page > 0 ? limit * (page - 1) : 0;
 
   const findManyArgs: FindManyArgs = {
     take: limit,
     skip,
     orderBy: {},
+    where: {},
   };
 
   if (query.sortBy) {
@@ -75,6 +83,12 @@ export async function paginate<T>({
     }
   }
 
+  if (query.search) {
+    for (const searchItem of query.search) {
+      search.push(searchItem);
+    }
+  }
+
   if (!sortBy.length) {
     sortBy.push(
       ...(config.defaultSortBy || [[config.sortableColumns[0], 'asc']])
@@ -83,6 +97,10 @@ export async function paginate<T>({
 
   sortBy.forEach((order) => {
     findManyArgs.orderBy[order[0]] = order[1];
+  });
+
+  search.forEach((searchItem) => {
+    findManyArgs.where[searchItem[0]] = { search: searchItem[1] };
   });
 
   const [total, data] = await Promise.all([

@@ -28,4 +28,4 @@ export function stocksControllerDelete(http: HttpClient, rootUrl: string, params
   );
 }
 
-stocksControllerDelete.PATH = '/api/stocks/{id}';
+stocksControllerDelete.PATH = '/api/stock/{id}';

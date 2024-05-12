@@ -34,6 +34,9 @@ export class EmptyGuardComponent {
   @Input()
   public buttonClick?: VoidFunction;
 
+  @Input()
+  public isLoading = false;
+
   protected lottieOptions: AnimationOptions = {
     path: this.options.lottieSrc,
   };

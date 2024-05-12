@@ -5,11 +5,12 @@ import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { ApiModule } from '@bakery-information-system/web/api-client';
 import { environment } from '../environments/environment';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { provideLottieOptions } from 'ngx-lottie';
+import { apiErrorInterceptor } from '@bakery-information-system/web/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,7 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideLottieOptions({
       player: () => import('lottie-web'),
     }),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([apiErrorInterceptor])),
     importProvidersFrom(
       TuiRootModule,
       ApiModule.forRoot({ rootUrl: environment.apiUrl }),
