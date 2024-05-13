@@ -31,6 +31,10 @@ export class LayoutService {
           label: 'Единицы измерения',
           routerLink: 'units',
         },
+        {
+          label: 'Поставщики',
+          routerLink: 'suppliers',
+        },
       ],
     },
     {

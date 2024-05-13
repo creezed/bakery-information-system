@@ -15,7 +15,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@bakery-information-system/web/core": ["libs/web/core/src/index.ts"],
       "@bakery-information-system/paginator": [
         "libs/api/paginator/src/index.ts"
       ],
@@ -25,6 +24,7 @@
       "@bakery-information-system/web/api-client": [
         "libs/web/api-client/src/index.ts"
       ],
+      "@bakery-information-system/web/core": ["libs/web/core/src/index.ts"],
       "@bakery-information-system/web/shared": ["libs/web/shared/src/index.ts"],
       "@bakery-information-system/web/ui": ["libs/web/ui/src/index.ts"]
     }

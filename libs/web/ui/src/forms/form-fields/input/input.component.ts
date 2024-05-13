@@ -41,6 +41,9 @@ export class InputComponent extends AbstractFormField {
   @Input()
   public statusIcons = false;
 
+  @Input()
+  public type = 'text';
+
   @ViewChild('pending', { static: true, read: TemplateRef })
   private pendingTemplate!: TemplateRef<unknown>;
 

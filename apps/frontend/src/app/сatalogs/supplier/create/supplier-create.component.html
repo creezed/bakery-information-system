@@ -1,0 +1,38 @@
+<h3 class="tui-form__header tui-form__header_margin-top_none">
+  Создание Поставщика
+</h3>
+<form [formGroup]="form" tuiTextfieldSize="l" [tuiTextfieldCleaner]="true">
+  <ui-input class="tui-form__row" formControlName="email" type="email">
+    Почта
+  </ui-input>
+
+  <ui-input class="tui-form__row" formControlName="name">
+    Наименование
+  </ui-input>
+
+  <ui-phone class="tui-form__row" formControlName="phone"> Телефон </ui-phone>
+
+  <div class="tui-form__buttons justify-end">
+    <button
+      appearance="flat"
+      size="m"
+      tuiButton
+      (click)="close()"
+      type="button"
+      class="tui-form__button"
+    >
+      Отменить
+    </button>
+    <button
+      [disabled]="!form.valid"
+      [loading]="isLoading$ | async"
+      (click)="submit()"
+      size="m"
+      tuiButton
+      type="submit"
+      class="tui-form__button"
+    >
+      Создать
+    </button>
+  </div>
+</form>

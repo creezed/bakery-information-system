@@ -150,6 +150,16 @@ exports.Prisma.IngredientScalarFieldEnum = {
   weightKg: 'weightKg'
 };
 
+exports.Prisma.SupplierScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  name: 'name',
+  email: 'email',
+  phone: 'phone'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -186,11 +196,19 @@ exports.Prisma.IngredientOrderByRelevanceFieldEnum = {
   unitId: 'unitId'
 };
 
+exports.Prisma.SupplierOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone'
+};
+
 
 exports.Prisma.ModelName = {
   Unit: 'Unit',
   Stock: 'Stock',
-  Ingredient: 'Ingredient'
+  Ingredient: 'Ingredient',
+  Supplier: 'Supplier'
 };
 
 /**

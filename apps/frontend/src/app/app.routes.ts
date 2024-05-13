@@ -20,6 +20,11 @@ export const appRoutes: Route[] = [
           import('./enterprise/stocks/stocks.routes').then((r) => r.ROUTES),
       },
       {
+        path: 'suppliers',
+        loadChildren: () =>
+          import('./сatalogs/supplier/supplier.routes').then((r) => r.ROUTES),
+      },
+      {
         path: 'ingredients',
         loadChildren: () =>
           import('./nomenclature/Ingredients/ingredients.routes').then(
