@@ -3,7 +3,7 @@
   [tuiTextfieldCustomContent]="statusIconShow && (statusIcon$ | async)"
 >
   <ng-content />
-  <input tuiTextfield type="text" />
+  <input tuiTextfield [attr.type]="type" />
 </tui-input>
 <tui-error [formControl]="control" [error]="[] | tuiFieldError | async" />
 

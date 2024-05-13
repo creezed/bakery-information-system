@@ -1,0 +1,47 @@
+<ui-page header="Поставщики" *ngIf="suppliers$ | async as suppliers">
+  <ng-template uiPageTab="Таблица">
+    <ui-page-empty-guard
+      [data]="suppliers"
+      [buttonClick]="emptySuppliersHandler"
+    >
+      <ui-table
+        [columns]="columns"
+        [actions]="actions"
+        [trackBy]="trackByRow"
+      />
+    </ui-page-empty-guard>
+
+    <ng-template let-row #actions="polymorpheus" [polymorpheus]="rowContext">
+      <button
+        tuiIconButton
+        type="button"
+        [icon]="toEditCommand.appearance.icon"
+        appearance="flat"
+        size="s"
+        shape="rounded"
+        (click)="toEditCommand.execute(row)"
+      ></button>
+      <button
+        tuiIconButton
+        type="button"
+        [icon]="deleteCommand.appearance.icon"
+        appearance="flat"
+        size="s"
+        shape="rounded"
+        (click)="deleteCommand.execute(row)"
+      ></button>
+    </ng-template>
+  </ng-template>
+
+  <ng-template uiPageActions>
+    <button
+      tuiIconButton
+      type="button"
+      [icon]="toCreate.appearance.icon"
+      appearance="flat"
+      size="s"
+      shape="rounded"
+      (click)="toCreate.execute()"
+    ></button>
+  </ng-template>
+</ui-page>
