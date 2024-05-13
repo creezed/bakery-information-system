@@ -11,21 +11,19 @@
 ></ng-container>
 
 <ng-template #link let-menuItem>
-  <tui-svg
-    [src]="menuItem.iconLeft"
-    class="icons8-icon icons8-violet"
-  ></tui-svg>
-  <a routerLinkActive="active" tuiAppearance="flat" tuiButton>
+  <a
+    routerLinkActive="active"
+    [iconLeft]="menuItem.iconLef"
+    [routerLink]="menuItem.routerLink"
+    tuiAppearance="flat"
+    tuiButton
+  >
     {{ menuItem.label }}
   </a>
 </ng-template>
 
 <ng-template #button let-menuItem>
-  <tui-svg
-    [src]="menuItem.iconLeft"
-    class="icons8-icon icons8-violet"
-  ></tui-svg>
-  <button tuiButton>
+  <button tuiButton [iconLeft]="menuItem.iconLeft">
     {{ menuItem.label }}
   </button>
 </ng-template>
@@ -37,17 +35,19 @@
     [sided]="true"
     [(open)]="open"
   >
-    <tui-svg
-      [src]="menuItem.iconLeft"
-      class="icons8-icon icons8-violet"
-    ></tui-svg>
-    <button tuiButton (click)="submenu = !submenu">
+    <button
+      [iconLeft]="menuItem.iconLeft"
+      tuiButton
+      (click)="submenu = !submenu"
+    >
       {{ menuItem.label }}
     </button>
     <ng-template #dropdown>
       <tui-data-list size="s">
         <ng-container *ngFor="let menuItem of menuItem.children">
-          <button tuiOption>{{ menuItem.label }}</button>
+          <button tuiOption [routerLink]="menuItem.routerLink ?? null">
+            {{ menuItem.label }}
+          </button>
         </ng-container>
       </tui-data-list>
     </ng-template>

@@ -5,12 +5,8 @@ import { Menu } from '../types/menu';
 export class LayoutService {
   private readonly _menu: Menu = [
     {
-      label: 'Главная',
-      iconLeft: 'tuiIconHome',
-    },
-    {
       label: 'Номенклатура',
-      iconLeft: 'tuiIconTag',
+      iconLeft: 'tuiIconClipboard',
       children: [
         {
           label: 'Модификаторы',
@@ -29,11 +25,10 @@ export class LayoutService {
     },
     {
       label: 'Справочники',
-      iconLeft: 'icons8::book',
+      iconLeft: 'tuiIconBook',
       children: [
         {
           label: 'Единицы измерения',
-          iconLeft: 'icons8::unit',
           routerLink: 'units',
         },
       ],
@@ -47,10 +42,6 @@ export class LayoutService {
           routerLink: 'stocks',
         },
       ],
-    },
-    {
-      label: 'Персонал',
-      iconLeft: 'tuiIconUsers',
     },
   ];
 
